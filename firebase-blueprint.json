@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A cordless tool product in the catalog.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "brand": { "type": "string" },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "tag": { "type": "string" },
+        "description": { "type": "string" },
+        "features": { "type": "array" },
+        "specs": { "type": "object" },
+        "isNew": { "type": "boolean" },
+        "popularity": { "type": "number" },
+        "discount": { "type": "number" }
+      },
+      "required": ["name", "brand", "price", "category", "image"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A product category.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "slug", "image"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Admin user configuration.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "A blog article.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "image": { "type": "string" },
+        "author": { "type": "string" },
+        "date": { "type": "string" },
+        "category": { "type": "string" },
+        "readTime": { "type": "string" }
+      },
+      "required": ["title", "content", "author"]
+    }
+  },
+  "firestore": {
+    "products": {
+      "schema": "Product",
+      "description": "Collection of all products."
+    },
+    "categories": {
+      "schema": "Category",
+      "description": "Collection of all categories."
+    },
+    "admins": {
+      "schema": "Admin",
+      "description": "Whitelist of admin users."
+    },
+    "blogPosts": {
+      "schema": "BlogPost",
+      "description": "Collection of blog articles."
+    }
+  }
+}
