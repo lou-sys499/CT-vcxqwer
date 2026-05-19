@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { MailtrapClient } from "mailtrap";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -11,6 +12,44 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Email route (Mailtrap)
+  app.post("/api/send-email", async (req, res) => {
+    const { to, subject, text } = req.body;
+    
+    if (!to || !subject || !text) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    
+    // Support an array or a single string
+    const recipients = Array.isArray(to) ? to.map(e => ({ email: e })) : [{ email: to }];
+    
+    const mailtrapKey = process.env.MAILTRAP_API_KEY;
+    if (!mailtrapKey) {
+      return res.status(500).json({ error: "MAILTRAP_API_KEY is not configured" });
+    }
+
+    try {
+      const client = new MailtrapClient({ token: mailtrapKey });
+      
+      const sender = {
+        email: "hello@demomailtrap.com",
+        name: "CordlessToolz Notifications",
+      };
+      
+      await client.send({
+        from: sender,
+        to: recipients,
+        subject: subject,
+        text: text,
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Mailtrap Error:", error);
+      res.status(500).json({ error: error.message || "Failed to send email" });
+    }
+  });
 
   // Gemini API route
   app.post("/api/summarize", async (req, res) => {

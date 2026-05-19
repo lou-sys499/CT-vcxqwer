@@ -97,12 +97,25 @@ export function Checkout() {
         `Subtotal: $${cartTotal.toFixed(2)}%0D%0A` +
         `Shipping: $${shipping.toFixed(2)}%0D%0A` +
         `Tax: $${tax.toFixed(2)}%0D%0A` +
-        `Grand Total: $${grandTotal.toFixed(2)}%0D%0A%0D%0A` +
+        `Grand Total: $${grandTotal.toFixed(2)}\n\n` +
         `Please send payment instructions or a payment link to ${formData.email} to complete this order.`;
 
-      window.location.href = `mailto:cordlesstoolz@outlook.com?subject=New Order: ${formData.firstName} ${formData.lastName}&body=${emailBody}`;
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: ['cordlesstoolz@outlook.com', formData.email],
+          subject: `New Order Confirmation: ${formData.firstName} ${formData.lastName}`,
+          text: emailBody.replace(/%0D%0A/g, '\n') // Switch back to normal newlines for the backend
+        })
+      });
+
+      if (!response.ok) {
+        // We log the error but still let the order succeed natively 
+        console.error("Failed to send confirmation email", await response.text());
+      }
       
-      // Wait briefly for the mailto protocol to trigger, then navigate
+      // Wait briefly, then navigate
       setTimeout(() => {
         navigate(`/order-success?id=${orderId}`, { replace: true });
       }, 500);
