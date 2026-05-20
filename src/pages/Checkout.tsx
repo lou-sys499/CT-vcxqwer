@@ -104,7 +104,7 @@ export function Checkout() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: ['cordlesstoolz@outlook.com', formData.email],
+          to: ['austinlouisetx@gmail.com', formData.email],
           subject: `New Order Confirmation: ${formData.firstName} ${formData.lastName}`,
           text: emailBody.replace(/%0D%0A/g, '\n') // Switch back to normal newlines for the backend
         })

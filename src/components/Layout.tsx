@@ -308,7 +308,7 @@ export function Footer() {
         <div>
           <h4 className="text-white font-bold mb-6">Support & Help</h4>
           <ul className="space-y-4 text-sm">
-            <li><a href="mailto:cordlesstoolz@outlook.com" className="hover:text-white transition-colors">Contact Support</a></li>
+            <li><a href="mailto:austinlouisetx@gmail.com" className="hover:text-white transition-colors">Contact Support</a></li>
             <li><NavLink to="/shipping-policy" className="hover:text-white transition-colors">Shipping Policy</NavLink></li>
             <li><NavLink to="/refund-policy" className="hover:text-white transition-colors">Returns & Refunds</NavLink></li>
             <li><NavLink to="/sitemap" className="hover:text-white transition-colors">Store Sitemap</NavLink></li>
