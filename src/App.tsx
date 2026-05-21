@@ -5,9 +5,11 @@
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, Suspense, lazy } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { Navbar, Footer } from './components/Layout';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { SEO } from './components/SEO';
 
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
 const Category = lazy(() => import('./pages/Category').then(m => ({ default: m.Category })));
@@ -30,47 +32,49 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  return null;
+  return <SEO url={typeof window !== 'undefined' ? window.location.href.split('?')[0] : ''} />;
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <Router>
-          <ScrollToTop />
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-grow bg-[#F9FAFB]">
-              <Suspense fallback={
-                <div className="min-h-screen flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
-                </div>
-              }>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/category/:slug" element={<Category />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:id" element={<BlogPostPage />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/order-success" element={<OrderSuccess />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                  <Route path="/refund-policy" element={<RefundPolicy />} />
-                  <Route path="/privacy" element={<PrivacyPolicy />} />
-                  <Route path="/terms" element={<TermsOfService />} />
-                  <Route path="/sitemap" element={<Sitemap />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </CartProvider>
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Router>
+            <ScrollToTop />
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-grow bg-[#F9FAFB]">
+                <Suspense fallback={
+                  <div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
+                  </div>
+                }>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/category/:slug" element={<Category />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:id" element={<BlogPostPage />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/order-success" element={<OrderSuccess />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                    <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
+                    <Route path="/terms" element={<TermsOfService />} />
+                    <Route path="/sitemap" element={<Sitemap />} />
+                  </Routes>
+                </Suspense>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </CartProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

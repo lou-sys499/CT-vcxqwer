@@ -13,6 +13,12 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  // Set X-Robots-Tag header to ensure indexing
+  app.use((req, res, next) => {
+    res.setHeader('X-Robots-Tag', 'index, follow');
+    next();
+  });
+
   app.use(compression());
   app.use(express.json());
 
