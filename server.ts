@@ -30,18 +30,22 @@ async function startServer() {
     }
 
     try {
-      const client = new MailtrapClient({ token: mailtrapKey });
+      const client = new MailtrapClient({ 
+        token: mailtrapKey,
+        testInboxId: 4642502,
+      });
       
       const sender = {
-        email: "hello@demomailtrap.com",
+        email: "hello@example.com",
         name: "CordlessToolz Notifications",
       };
       
-      await client.send({
+      await client.testing.send({
         from: sender,
         to: recipients,
         subject: subject,
         text: text,
+        category: "Integration Test",
       });
 
       res.json({ success: true });
