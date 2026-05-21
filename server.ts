@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { MailtrapClient } from "mailtrap";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,7 +22,7 @@ async function startServer() {
   app.use(compression());
   app.use(express.json());
 
-  // Email route (Mailtrap)
+  // Email route (SMTP Mailtrap)
   app.post("/api/send-email", async (req, res) => {
     const { to, subject, text } = req.body;
     
@@ -31,35 +31,34 @@ async function startServer() {
     }
     
     // Support an array or a single string
-    const recipients = Array.isArray(to) ? to.map(e => ({ email: e })) : [{ email: to }];
+    const recipients = Array.isArray(to) ? to.join(", ") : to;
     
-    const mailtrapKey = process.env.MAILTRAP_API_KEY;
-    if (!mailtrapKey) {
-      return res.status(500).json({ error: "MAILTRAP_API_KEY is not configured" });
+    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+
+    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+      return res.status(500).json({ error: "SMTP configuration is missing. Please add SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS variables." });
     }
 
     try {
-      const client = new MailtrapClient({ 
-        token: mailtrapKey,
-        testInboxId: 4642502,
+      const transporter = nodemailer.createTransport({
+        host: SMTP_HOST,
+        port: parseInt(SMTP_PORT || "2525", 10),
+        auth: {
+          user: SMTP_USER,
+          pass: SMTP_PASS,
+        },
       });
       
-      const sender = {
-        email: "hello@example.com",
-        name: "CordlessToolz Notifications",
-      };
-      
-      await client.testing.send({
-        from: sender,
+      await transporter.sendMail({
+        from: '"CordlessToolz Notifications" <hello@example.com>',
         to: recipients,
         subject: subject,
         text: text,
-        category: "Integration Test",
       });
 
       res.json({ success: true });
     } catch (error: any) {
-      console.error("Mailtrap Error:", error);
+      console.error("Nodemailer SMTP Error:", error);
       res.status(500).json({ error: error.message || "Failed to send email" });
     }
   });
@@ -177,9 +176,27 @@ Sitemap: ${baseUrl}/sitemap.xml`);
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    const fs = await import('fs/promises');
+    app.use(express.static(distPath, { index: false }));
+    app.get('*', async (req, res) => {
+      try {
+        let html = await fs.readFile(path.join(distPath, 'index.html'), 'utf-8');
+        const baseUrl = process.env.CUSTOM_DOMAIN || 'https://cordlesstoolz.com';
+        let currentPath = req.path || '/';
+        currentPath = currentPath.split('?')[0];
+        if (currentPath !== '/' && currentPath.endsWith('/')) {
+           currentPath = currentPath.slice(0, -1);
+        }
+        const canonicalUrl = `${baseUrl}${currentPath}`;
+        const seoTags = `
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="${canonicalUrl}" />
+        `;
+        html = html.replace('<!-- __SEO_INJECTION__ -->', seoTags);
+        res.send(html);
+      } catch (e) {
+        res.status(500).send('Server Error');
+      }
     });
   }
 
