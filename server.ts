@@ -7,10 +7,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import compression from "compression";
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use(compression());
   app.use(express.json());
 
   // Email route (Mailtrap)
@@ -75,6 +78,16 @@ async function startServer() {
     }
   });
 
+  // robots.txt route
+  app.get("/robots.txt", (req, res) => {
+    const baseUrl = process.env.APP_URL || `https://${req.get('host')}`;
+    res.type('text/plain');
+    res.send(`User-agent: *
+Allow: /
+
+Sitemap: ${baseUrl}/sitemap.xml`);
+  });
+
   // Sitemap route
   app.get("/sitemap.xml", async (req, res) => {
     try {
@@ -103,83 +116,43 @@ async function startServer() {
         res.write('  </url>\n');
       }
 
-      // Read firebase-applet-config.json
-      const configPath = path.join(process.cwd(), 'firebase-applet-config.json');
-      const fs = await import('fs/promises');
-      let fbConfig;
       try {
-        const configStr = await fs.readFile(configPath, 'utf8');
-        fbConfig = JSON.parse(configStr);
+        const { getFirestoreProducts } = await import("./src/services/productService");
+        const productsData = await getFirestoreProducts();
+        for (const p of productsData) {
+          res.write('  <url>\n');
+          res.write(`    <loc>${baseUrl}/product/${p.id}</loc>\n`);
+          res.write('    <changefreq>daily</changefreq>\n');
+          res.write('    <priority>0.9</priority>\n');
+          res.write('  </url>\n');
+        }
       } catch (e) {
-        console.warn("Could not load firebase config for sitemap", e);
+        console.warn("Failed fetching products for sitemap using SDK", e);
       }
 
-      if (fbConfig && fbConfig.projectId) {
-        const projectId = fbConfig.projectId;
-        const databaseId = fbConfig.firestoreDatabaseId || '(default)';
+      try {
+        const { getFirestoreCategories } = await import("./src/services/productService");
+        const categories = await getFirestoreCategories();
+        for(const cat of categories) {
+           res.write('  <url>\n');
+           res.write(`    <loc>${baseUrl}/category/${cat.slug || cat.id}</loc>\n`);
+           res.write('    <changefreq>weekly</changefreq>\n');
+           res.write('    <priority>0.8</priority>\n');
+           res.write('  </url>\n');
+        }
+      } catch(e) {}
 
-        // Fetch products
-        try {
-          const productsUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/products?pageSize=1000`;
-          const productsRes = await fetch(productsUrl);
-          if (productsRes.ok) {
-            const productsData = await productsRes.json();
-            if (productsData.documents) {
-              for (const doc of productsData.documents) {
-                // Document name is like: projects/.../databases/.../documents/products/1234
-                const id = doc.name.split('/').pop();
-                res.write('  <url>\n');
-                res.write(`    <loc>${baseUrl}/product/${id}</loc>\n`);
-                res.write('    <changefreq>daily</changefreq>\n');
-                res.write('    <priority>0.9</priority>\n');
-                res.write('  </url>\n');
-              }
-            }
-          }
-        } catch (e) { console.warn("Failed fetching products for sitemap", e); }
-
-        // Fetch categories
-        try {
-          const catUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/categories?pageSize=100`;
-          const catRes = await fetch(catUrl);
-          if (catRes.ok) {
-            const catData = await catRes.json();
-            if (catData.documents) {
-              for (const doc of catData.documents) {
-                // The document ID is not necessarily the slug. But let's check what ID is used in the app routing.
-                // The route expects /category/:slug. Let's see if we have slug in the document fields. 
-                const fields = doc.fields || {};
-                const slug = fields.slug?.stringValue || doc.name.split('/').pop();
-                
-                res.write('  <url>\n');
-                res.write(`    <loc>${baseUrl}/category/${slug}</loc>\n`);
-                res.write('    <changefreq>weekly</changefreq>\n');
-                res.write('    <priority>0.8</priority>\n');
-                res.write('  </url>\n');
-              }
-            }
-          }
-        } catch (e) { console.warn("Failed fetching categories for sitemap", e); }
-
-        // Fetch blog posts
-        try {
-          const blogUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/blogPosts?pageSize=100`;
-          const blogRes = await fetch(blogUrl);
-          if (blogRes.ok) {
-            const blogData = await blogRes.json();
-            if (blogData.documents) {
-              for (const doc of blogData.documents) {
-                const id = doc.name.split('/').pop();
-                res.write('  <url>\n');
-                res.write(`    <loc>${baseUrl}/blog/${id}</loc>\n`);
-                res.write('    <changefreq>weekly</changefreq>\n');
-                res.write('    <priority>0.7</priority>\n');
-                res.write('  </url>\n');
-              }
-            }
-          }
-        } catch (e) { console.warn("Failed fetching blog posts for sitemap", e); }
-      }
+      try {
+        const { getFirestorePosts } = await import("./src/services/blogService");
+        const posts = await getFirestorePosts();
+        for(const post of posts) {
+          res.write('  <url>\n');
+          res.write(`    <loc>${baseUrl}/blog/${post.id}</loc>\n`);
+          res.write('    <changefreq>weekly</changefreq>\n');
+          res.write('    <priority>0.7</priority>\n');
+          res.write('  </url>\n');
+        }
+      } catch(e) {}
 
       res.write('</urlset>\n');
       res.end();

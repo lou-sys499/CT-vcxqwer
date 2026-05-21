@@ -13,35 +13,71 @@ export function OrderSuccess() {
 
   const orderNumber = dbOrderId ? dbOrderId.substring(0, 8).toUpperCase() : "CT-" + Math.floor(100000 + Math.random() * 900000);
   
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     const doc = new jsPDF();
     
-    // Header
-    doc.setFontSize(22);
-    doc.text('CORDLESSTOOLZ', 20, 20);
+    let startY = 20;
+
+    // Attempt to load and add logo
+    try {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = 'https://i.postimg.cc/mkb6RVph/cordlesstoolz-logo.png';
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0);
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 40;
+        const imgHeight = (img.height / img.width) * imgWidth;
+        doc.addImage(imgData, 'PNG', 20, 10, imgWidth, imgHeight);
+        
+        startY = 10 + imgHeight + 10; // Adjust Y position based on image height
+      }
+    } catch (e) {
+      console.warn("Could not load logo for PDF", e);
+      // Fallback text if logo fails
+      doc.setFontSize(22);
+      doc.text('CORDLESSTOOLZ', 20, startY);
+      startY += 10;
+    }
     
     doc.setFontSize(10);
     doc.setTextColor(100);
-    doc.text('Professional Power Tools & Equipment', 20, 28);
+    doc.text('Professional Power Tools & Equipment', 20, startY);
+    startY += 15;
     
     // Title
     doc.setFontSize(16);
     doc.setTextColor(0);
-    doc.text('Order Confirmation / Invoice', 20, 45);
+    doc.text('Order Confirmation / Invoice', 20, startY);
+    startY += 10;
     
     // Order ID
     doc.setFontSize(12);
-    doc.text(`Order Number: #${orderNumber}`, 20, 55);
+    doc.text(`Order Number: #${orderNumber}`, 20, startY);
+    startY += 7;
     
     const today = new Date().toLocaleDateString();
-    doc.text(`Date: ${today}`, 20, 62);
+    doc.text(`Date: ${today}`, 20, startY);
+    startY += 18;
     
     // Body Note
     doc.setFontSize(11);
-    doc.text('Thank you for shopping at CordlessToolz.', 20, 80);
-    doc.text('A detailed receipt and payment instructions have been sent to your email.', 20, 86);
-    doc.text('Expected delivery: 2-3 Business Days.', 20, 92);
-    doc.text('This document serves as proof of order initiation.', 20, 98);
+    doc.text('Thank you for shopping at CordlessToolz.', 20, startY);
+    startY += 6;
+    doc.text('A detailed receipt and payment instructions have been sent to your email.', 20, startY);
+    startY += 6;
+    doc.text('Expected delivery: 2-3 Business Days.', 20, startY);
+    startY += 6;
+    doc.text('This document serves as proof of order initiation.', 20, startY);
     
     // Footer
     doc.setFontSize(10);

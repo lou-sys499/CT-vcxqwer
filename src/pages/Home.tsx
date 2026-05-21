@@ -59,8 +59,7 @@ export function Home() {
                 <Zap className="w-4 h-4" /> 2026 Home & Workshop Gear
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter mb-8 text-balance">
-                High-Voltage <br />
-                <span className="text-orange-600 italic">Precision</span> Cleaning.
+                Shop Cordless <span className="text-orange-600 italic">Power Tools</span>, Vacuums & Tool Accessories Online.
               </h1>
               <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl mb-10 text-balance">
                 From professional workshop drills to ultra-intelligent cordless vacuums. We curate the world's most innovative battery-powered utility gear.
