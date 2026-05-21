@@ -86,7 +86,7 @@ async function startServer() {
 
   // robots.txt route
   app.get("/robots.txt", (req, res) => {
-    const baseUrl = process.env.APP_URL || `https://${req.get('host')}`;
+    const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
     res.type('text/plain');
     res.send(`User-agent: *
 Allow: /
@@ -97,7 +97,7 @@ Sitemap: ${baseUrl}/sitemap.xml`);
   // Sitemap route
   app.get("/sitemap.xml", async (req, res) => {
     try {
-      const baseUrl = process.env.APP_URL || `https://${req.get('host')}`;
+      const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
       const staticRoutes = [
         '',
         '/blog',
