@@ -197,66 +197,64 @@ export function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="md:hidden bg-white border-b border-slate-100 overflow-y-auto max-h-[85vh] shadow-xl absolute top-full left-0 right-0 w-full"
-            >
-              <div className="px-4 py-6 space-y-4">
-                {categories.map((cat) => (
-                  <NavLink 
-                    key={cat.slug} 
-                    to={`/category/${cat.slug}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
-                  >
-                    {cat.name}
-                  </NavLink>
-                ))}
-                <NavLink 
-                  to="/blog?category=Guides"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
-                >
-                  Buying Guides
-                </NavLink>
-                <NavLink 
-                  to="/blog?category=Reviews"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
-                >
-                  Field Reviews
-                </NavLink>
-                <NavLink 
-                  to="/blog"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
-                >
-                  Pro Blog
-                </NavLink>
-                <NavLink 
-                  to="/about"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
-                >
-                  About Us
-                </NavLink>
-                <div className="pt-4 border-t border-slate-100">
-                  <NavLink to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 text-slate-500 font-bold">
-                    Admin Portal
-                  </NavLink>
-                  <button className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                    Shop All Tools <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+        <div 
+          className={cn(
+            "md:hidden absolute top-full left-0 right-0 w-full bg-white border-b border-slate-100 shadow-xl overflow-y-auto transition-all duration-300 origin-top",
+            isMobileMenuOpen ? "opacity-100 scale-y-100 visible max-h-[85vh]" : "opacity-0 scale-y-0 invisible max-h-0"
           )}
-        </AnimatePresence>
+        >
+          <div className="px-4 py-6 space-y-4">
+            {categories.map((cat) => (
+              <NavLink 
+                key={cat.slug} 
+                to={`/category/${cat.slug}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
+              >
+                {cat.name}
+              </NavLink>
+            ))}
+            <NavLink 
+              to="/blog?category=Guides"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
+            >
+              Buying Guides
+            </NavLink>
+            <NavLink 
+              to="/blog?category=Reviews"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
+            >
+              Field Reviews
+            </NavLink>
+            <NavLink 
+              to="/blog"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
+            >
+              Pro Blog
+            </NavLink>
+            <NavLink 
+              to="/about"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-lg font-semibold text-slate-900 hover:text-orange-600"
+            >
+              About Us
+            </NavLink>
+            <div className="pt-4 border-t border-slate-100">
+              <NavLink to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 text-slate-500 font-bold">
+                Admin Portal
+              </NavLink>
+              <button 
+                onClick={() => { setIsMobileMenuOpen(false); navigate('/'); }}
+                className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 mt-2"
+              >
+                Shop All Tools <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
       </nav>
       
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
