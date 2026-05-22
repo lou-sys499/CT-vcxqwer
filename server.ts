@@ -11,7 +11,7 @@ import compression from "compression";
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   // Set X-Robots-Tag header to ensure indexing
   app.use((req, res, next) => {
@@ -192,7 +192,7 @@ Sitemap: ${baseUrl}/sitemap.xml`);
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="${canonicalUrl}" />
         `;
-        html = html.replace('<!-- __SEO_INJECTION__ -->', seoTags);
+        html = html.replace('</head>', `${seoTags}</head>`);
         res.send(html);
       } catch (e) {
         res.status(500).send('Server Error');

@@ -65,7 +65,7 @@ export function Checkout() {
           city: formData.city,
           zip: formData.zip,
         },
-        items: cart.map(item => ({
+        items: cart.filter(Boolean).map(item => ({
           id: item.id,
           name: item.name,
           price: item.price,
@@ -81,7 +81,7 @@ export function Checkout() {
       
       clearCart();
       
-      const orderSummary = cart.map(item => `${item.quantity}x ${item.name} ($${item.price})`).join('%0D%0A');
+      const orderSummary = cart.filter(Boolean).map(item => `${item.quantity}x ${item.name} ($${item.price})`).join('%0D%0A');
       const paymentMethodName = paymentMethod === 'email_link' ? 'Pay by Link' : 
                                paymentMethod === 'paypal' ? 'PayPal' : 'Zelle';
                                
@@ -104,7 +104,7 @@ export function Checkout() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: ['austinlouisetx@gmail.com', formData.email],
+          to: ['support@cordlesstoolz.com', formData.email],
           subject: `New Order Confirmation: ${formData.firstName} ${formData.lastName}`,
           text: emailBody.replace(/%0D%0A/g, '\n') // Switch back to normal newlines for the backend
         })
@@ -338,16 +338,16 @@ export function Checkout() {
             <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 premium-shadow">
               <h3 className="text-lg font-black text-slate-900 mb-6">Order Summary</h3>
               <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                {cart.map((item) => (
+                {cart.filter(Boolean).map((item) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-20 h-20 bg-slate-50 rounded-2xl p-2 border border-slate-100 shrink-0">
-                      <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item.name} className="w-full h-full object-contain" />
+                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain" />
                     </div>
                     <div className="flex-grow">
-                      <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1">{item.name}</h4>
+                      <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1">{item?.name}</h4>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-slate-500">Qty: {item.quantity}</span>
-                        <span className="text-sm font-black text-slate-900">${(item.price * item.quantity).toFixed(2)}</span>
+                        <span className="text-xs text-slate-500">Qty: {item?.quantity}</span>
+                        <span className="text-sm font-black text-slate-900">${(item?.price * item?.quantity).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

@@ -14,6 +14,8 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
 
+  if (!product) return null;
+
   return (
     <motion.div
       whileHover={{ y: -8 }}

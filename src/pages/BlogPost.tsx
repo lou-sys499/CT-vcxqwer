@@ -23,7 +23,7 @@ export function BlogPostPage() {
       ]);
       const found = posts.find(p => p.id === id);
       setPost(found || null);
-      setProducts(productsData || []);
+      setProducts((productsData || []).filter(Boolean));
       setLoading(false);
     };
     fetchData();
@@ -35,10 +35,10 @@ export function BlogPostPage() {
     let content = post.content;
     
     // Sort products by name length descending to avoid partial matches
-    const sortedProducts = [...products].sort((a, b) => b.name.length - a.name.length);
+    const sortedProducts = [...products].sort((a, b) => (b?.name?.length || 0) - (a?.name?.length || 0));
     
     sortedProducts.forEach(product => {
-      if (product.name.trim().length < 4) return; // Skip very short vague names
+      if (!product || !product.name || product.name.trim().length < 4) return; // Skip very short vague names
       
       const escapedName = product.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       // Case insensitive match for the exact product name

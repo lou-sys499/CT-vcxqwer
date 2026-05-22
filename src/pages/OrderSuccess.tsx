@@ -82,7 +82,7 @@ export function OrderSuccess() {
     // Footer
     doc.setFontSize(10);
     doc.setTextColor(150);
-    doc.text('If you have any questions, please contact support at austinlouisetx@gmail.com', 20, 280);
+    doc.text('If you have any questions, please contact support at support@cordlesstoolz.com', 20, 280);
     
     doc.save(`Invoice_${orderNumber}.pdf`);
   };

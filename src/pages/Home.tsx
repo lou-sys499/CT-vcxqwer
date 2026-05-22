@@ -26,7 +26,7 @@ export function Home() {
       // Categories
       const fbCats = await import('../services/productService').then(m => m.getFirestoreCategories());
       setCategories(prev => {
-        const combined = [...prev, ...fbCats];
+        const combined = [...prev, ...fbCats].filter(Boolean);
         return Array.from(new Map(combined.map(c => [c.id, c])).values());
       });
     };
@@ -47,24 +47,24 @@ export function Home() {
         description="Discover professional-grade cordless power tools, vacuums, and heavy-duty equipment for your next project. Built to last." 
       />
       {/* Hero Section */}
-      <section className="relative pt-32 lg:pt-48 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-          <div className="max-w-3xl">
+      <section className="relative pt-32 lg:pt-48 pb-16 lg:pb-32 overflow-hidden text-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 flex flex-col items-center">
+          <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center gap-2 bg-orange-100 text-orange-600 px-4 py-1.5 rounded-full text-xs font-extra-bold uppercase tracking-widest mb-6">
+              <span className="inline-flex items-center justify-center gap-2 bg-orange-100 text-orange-600 px-4 py-1.5 rounded-full text-xs font-extra-bold uppercase tracking-widest mb-6">
                 <Zap className="w-4 h-4" /> 2026 Home & Workshop Gear
               </span>
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter mb-8 text-balance">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter mb-8 text-balance mx-auto">
                 Shop Cordless <span className="text-orange-600 italic">Power Tools</span>, Vacuums & Tool Accessories Online.
               </h1>
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl mb-10 text-balance">
+              <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto mb-10 text-balance">
                 From professional workshop drills to ultra-intelligent cordless vacuums. We curate the world's most innovative battery-powered utility gear.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#top-picks" className="bg-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:bg-orange-700 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                   Top Picks This Week <ArrowRight className="w-5 h-5" />
                 </a>
@@ -77,16 +77,16 @@ export function Home() {
         </div>
 
         {/* Hero Image / Background Element */}
-        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-10 opacity-40 lg:opacity-100">
+        <div className="absolute inset-0 w-full h-full -z-10 opacity-20">
            {/* In a real project, use a high quality transparent tool image */}
-           <div className="w-full h-full bg-[radial-gradient(circle_at_60%_50%,rgba(249,115,22,0.15),transparent_60%)] relative">
+           <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(249,115,22,0.15),transparent_60%)] relative">
               <motion.img 
-                initial={{ opacity: 0, scale: 0.8, x: 100 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2, delay: 0.2 }}
                 src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&q=80&w=1200" 
-                alt="Power Tool" 
-                className="w-full h-full object-cover lg:object-contain object-right-bottom scale-x-[-1]"
+                alt="Power Tool Background" 
+                className="w-full h-full object-cover object-center scale-x-[-1]"
               />
            </div>
         </div>
@@ -132,6 +132,7 @@ export function Home() {
               </div>
               <div className="relative h-full min-h-[400px]">
                 <img 
+                  loading="lazy"
                   src={topSmotureProduct.images[0]} 
                   alt={topSmotureProduct.name}
                   className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
@@ -145,12 +146,10 @@ export function Home() {
       )}
 
       {/* Featured Categories */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <span className="text-orange-600 font-bold uppercase tracking-widest text-xs mb-2 block">Departments</span>
-            <h2 className="text-4xl font-black text-slate-900 tracking-tight">Pro Cleaning & Workshop.</h2>
-          </div>
+      <section className="max-w-7xl mx-auto px-4 md:px-8 text-center pt-10">
+        <div className="mb-12">
+          <span className="text-orange-600 font-bold uppercase tracking-widest text-xs mb-2 block text-center">Departments</span>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight text-center">Pro Cleaning & Workshop.</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -164,7 +163,7 @@ export function Home() {
                 whileHover={{ y: -4 }}
                 className="group relative h-64 rounded-3xl overflow-hidden cursor-pointer"
               >
-                <img src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} />
+                <img loading="lazy" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
                   <h3 className="text-xl font-bold text-white mb-1">{cat.name}</h3>
                   <p className="text-xs text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{cat.description}</p>
@@ -196,9 +195,9 @@ export function Home() {
             </div>
 
             <div className="mt-16 text-center">
-              <button className="bg-slate-900 text-white px-10 py-4 rounded-xl font-bold shadow-xl hover:bg-slate-800 transition-all">
+              <NavLink to="/category/power-tools" className="inline-block bg-slate-900 text-white px-10 py-4 rounded-xl font-bold shadow-xl hover:bg-slate-800 transition-all">
                 Shop Full Catalog
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -232,6 +231,7 @@ export function Home() {
           <div className="relative group">
             <div className="bg-slate-50 rounded-3xl p-4 md:p-8 transform rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-slate-200 aspect-video overflow-hidden">
                 <img 
+                  loading="lazy"
                   src="https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&q=80&w=800" 
                   alt="Blog Preview"
                   className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -255,6 +255,7 @@ export function Home() {
           </blockquote>
           <div>
             <img 
+              loading="lazy"
               src="https://img.magnific.com/premium-psd/psd-chinese-construction-engineer-with-arms-crossed-construction-management-concept_401927-3393.jpg?semt=ais_incoming&w=740&q=80" 
               alt="Marcus Chen" 
               className="w-16 h-16 object-cover bg-slate-800 rounded-full mx-auto mb-4 border-2 border-orange-600" 

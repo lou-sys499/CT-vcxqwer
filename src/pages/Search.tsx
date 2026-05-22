@@ -35,12 +35,15 @@ export function Search() {
   const searchResults = React.useMemo(() => {
     if (!query) return [];
     const lowerQuery = query.toLowerCase();
-    return allProducts.filter(p => 
-      p.name.toLowerCase().includes(lowerQuery) || 
-      p.description.toLowerCase().includes(lowerQuery) || 
-      p.brand.toLowerCase().includes(lowerQuery) ||
-      (p.category && p.category.toLowerCase().includes(lowerQuery))
-    );
+    return allProducts.filter(p => {
+      if (!p || !p.name) return false;
+      return (
+        p.name.toLowerCase().includes(lowerQuery) || 
+        p.description.toLowerCase().includes(lowerQuery) || 
+        p.brand.toLowerCase().includes(lowerQuery) ||
+        (p.category && p.category.toLowerCase().includes(lowerQuery))
+      );
+    });
   }, [allProducts, query]);
 
   if (loading) {

@@ -1,19 +1,20 @@
 import React from 'react';
-import { useParams, NavLink, useSearchParams } from 'react-router-dom';
+import { useParams, NavLink, useSearchParams, useNavigate } from 'react-router-dom';
 import { Filter, ChevronDown, SlidersHorizontal, ArrowLeft, X, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CATEGORIES, PRODUCTS } from '../data';
 import { ProductCard } from '../components/ProductUI';
-import { getFirestoreProducts } from '../services/productService';
-import { Product } from '../types';
+import { getFirestoreProducts, getFirestoreCategories } from '../services/productService';
+import { Product, Category as CategoryType } from '../types';
 import { cn } from '../lib/utils';
 import { SEO } from '../components/SEO';
 
 export function Category() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const brandParam = searchParams.get('brand');
-  const category = CATEGORIES.find(c => c.slug === slug) || CATEGORIES[0];
+  const [category, setCategory] = React.useState<CategoryType | null>(null);
   const [allProducts, setAllProducts] = React.useState<Product[]>([]);
   const [loading, setLoading] = React.useState(true);
   
@@ -38,8 +39,22 @@ export function Category() {
   }, [brandParam]);
 
   React.useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchCategoryAndProducts = async () => {
       setLoading(true);
+      
+      // Fetch category
+      const fbCats = await getFirestoreCategories();
+      const combinedCats = [...CATEGORIES, ...fbCats];
+      const uniqueCats = Array.from(new Map(combinedCats.map(c => [c.id, c])).values());
+      const currentCategory = uniqueCats.find(c => c.slug === slug);
+      
+      if (currentCategory) {
+        setCategory(currentCategory);
+      } else if (uniqueCats.length > 0) {
+        setCategory(uniqueCats[0]);
+      }
+      
+      // Fetch products
       const fbProducts = await getFirestoreProducts(slug);
       let staticProducts = PRODUCTS.filter(p => p.category === slug);
       
@@ -49,7 +64,7 @@ export function Category() {
       setAllProducts(unique);
       setLoading(false);
     };
-    fetchProducts();
+    fetchCategoryAndProducts();
   }, [slug]);
 
   const displayedProducts = React.useMemo(() => {
@@ -176,10 +191,12 @@ export function Category() {
 
   return (
     <div className="pt-24 pb-24 min-h-screen">
-      <SEO 
-        title={`${category.name} | CordlessToolz`}
-        description={category.description} 
-      />
+      {category && (
+        <SEO 
+          title={`${category.name} | CordlessToolz`}
+          description={category.description} 
+        />
+      )}
       {/* Header */}
       <div className="bg-white border-b border-slate-100 py-12 mb-8">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -188,8 +205,12 @@ export function Category() {
           </NavLink>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>
-              <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-4">{category.name}</h1>
-              <p className="text-slate-500 max-w-2xl leading-relaxed">{category.description}</p>
+              <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-4">
+                {category?.name || <div className="h-12 w-64 bg-slate-200 animate-pulse rounded-lg"></div>}
+              </h1>
+              <p className="text-slate-500 max-w-2xl leading-relaxed">
+                {category?.description || <div className="h-6 w-full max-w-md bg-slate-100 animate-pulse rounded"></div>}
+              </p>
             </div>
           </div>
         </div>

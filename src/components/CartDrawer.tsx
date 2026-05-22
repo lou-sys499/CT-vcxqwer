@@ -61,15 +61,15 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                   </button>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.filter(Boolean).map((item) => (
                   <div key={item.id} className="flex gap-4 group">
                     <div className="w-24 h-24 bg-slate-50 rounded-2xl p-2 border border-slate-100 overflow-hidden flex items-center justify-center shrink-0">
-                      <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
+                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
                     </div>
                     <div className="flex-grow flex flex-col justify-between">
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1 line-clamp-2">{item.name}</h4>
-                        <p className="text-orange-600 font-bold text-xs uppercase tracking-widest">{item.brand}</p>
+                        <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1 line-clamp-2">{item?.name}</h4>
+                        <p className="text-orange-600 font-bold text-xs uppercase tracking-widest">{item?.brand}</p>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">

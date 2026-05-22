@@ -60,12 +60,12 @@ export function Admin() {
     const fetchData = async () => {
       // Categories
       const fbCats = await getFirestoreCategories();
-      const combinedCats = [...STATIC_CATEGORIES, ...fbCats];
+      const combinedCats = [...STATIC_CATEGORIES, ...fbCats].filter(Boolean);
       setCategories(Array.from(new Map(combinedCats.map(c => [c.id, c])).values()));
 
       // Products
       const fbProducts = await getFirestoreProducts();
-      const combinedProducts = [...STATIC_PRODUCTS, ...fbProducts];
+      const combinedProducts = [...STATIC_PRODUCTS, ...fbProducts].filter(Boolean);
       const uniqueProducts = Array.from(new Map(combinedProducts.map(p => [p.id, p])).values());
       setProducts(uniqueProducts);
 

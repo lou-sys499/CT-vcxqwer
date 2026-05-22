@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { useCart } from '../context/CartContext';
 import { CartDrawer } from './CartDrawer';
-import { getFirestoreCategories } from '../services/productService';
 import { CATEGORIES as STATIC_CATEGORIES, PRODUCTS } from '../data';
 import { Category } from '../types';
 
@@ -24,10 +23,15 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
     
     const fetchCats = async () => {
-      const fbCats = await getFirestoreCategories();
-      const combinedCats = [...STATIC_CATEGORIES, ...fbCats];
-      const uniqueCats = Array.from(new Map(combinedCats.map(c => [c.id, c])).values());
-      setCategories(uniqueCats);
+      try {
+        const { getFirestoreCategories } = await import('../services/productService');
+        const fbCats = await getFirestoreCategories();
+        const combinedCats = [...STATIC_CATEGORIES, ...fbCats].filter(Boolean);
+        const uniqueCats = Array.from(new Map(combinedCats.map(c => [c.id, c])).values());
+        setCategories(uniqueCats);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
     };
     fetchCats();
 
@@ -196,10 +200,11 @@ export function Navbar() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-b border-slate-100 overflow-hidden"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-white border-b border-slate-100 overflow-y-auto max-h-[85vh] shadow-xl absolute top-full left-0 right-0 w-full"
             >
               <div className="px-4 py-6 space-y-4">
                 {categories.map((cat) => (
@@ -308,7 +313,7 @@ export function Footer() {
         <div>
           <h4 className="text-white font-bold mb-6">Support & Help</h4>
           <ul className="space-y-4 text-sm">
-            <li><a href="mailto:austinlouisetx@gmail.com" className="hover:text-white transition-colors">Contact Support</a></li>
+            <li><a href="mailto:support@cordlesstoolz.com" className="hover:text-white transition-colors">Contact Support</a></li>
             <li><NavLink to="/shipping-policy" className="hover:text-white transition-colors">Shipping Policy</NavLink></li>
             <li><NavLink to="/refund-policy" className="hover:text-white transition-colors">Returns & Refunds</NavLink></li>
             <li><NavLink to="/sitemap" className="hover:text-white transition-colors">Store Sitemap</NavLink></li>

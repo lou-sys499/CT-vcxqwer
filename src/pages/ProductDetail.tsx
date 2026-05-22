@@ -173,6 +173,12 @@ export function ProductDetail() {
                   >
                     <Zap className="w-6 h-6" /> Add to Toolbox
                   </button>
+                  <button 
+                    onClick={() => { handleAddToCart(); navigate('/checkout'); }}
+                    className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-slate-800 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-3"
+                  >
+                    Checkout Now
+                  </button>
                </div>
 
                <div className="grid grid-cols-2 gap-4">

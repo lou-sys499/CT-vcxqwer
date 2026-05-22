@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import type { User } from 'firebase/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -15,11 +14,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-    return unsubscribe;
+    let unsubscribe: (() => void) | undefined;
+    const initAuth = async () => {
+      try {
+        const { auth } = await import('../lib/firebase');
+        const { onAuthStateChanged } = await import('firebase/auth');
+        unsubscribe = onAuthStateChanged(auth, (user) => {
+          setUser(user);
+          setLoading(false);
+        });
+      } catch (error) {
+        console.error("Firebase auth initialization failed:", error);
+        setLoading(false);
+      }
+    };
+    initAuth();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const isAdmin = user?.email === 'austinlouisetx@gmail.com';
