@@ -26,6 +26,9 @@ const RefundPolicy = lazy(() => import('./pages/RefundPolicy').then(m => ({ defa
 const PrivacyPolicy = lazy(() => import('./pages/Privacy').then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('./pages/Terms').then(m => ({ default: m.TermsOfService })));
 const Sitemap = lazy(() => import('./pages/Sitemap').then(m => ({ default: m.Sitemap })));
+const Vacuums = lazy(() => import('./pages/Vacuums').then(m => ({ default: m.Vacuums })));
+const Accessories = lazy(() => import('./pages/Accessories').then(m => ({ default: m.Accessories })));
+const Recipes = lazy(() => import('./pages/Recipes').then(m => ({ default: m.Recipes })));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -66,6 +69,9 @@ export default function App() {
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/sitemap" element={<Sitemap />} />
+                    <Route path="/vacuums" element={<Vacuums />} />
+                    <Route path="/tool-accessories" element={<Accessories />} />
+                    <Route path="/recipes" element={<Recipes />} />
                   </Routes>
                 </Suspense>
               </main>

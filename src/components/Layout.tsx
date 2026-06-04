@@ -128,7 +128,6 @@ export function Navbar() {
                 </div>
               </div>
               
-              <NavLink to="/blog?category=Reviews" className="text-sm font-semibold text-slate-600 hover:text-orange-600 transition-colors">Reviews</NavLink>
               <NavLink to="/blog" className="text-sm font-semibold text-slate-600 hover:text-orange-600 transition-colors">Blog</NavLink>
               <NavLink to="/about" className="text-sm font-semibold text-slate-600 hover:text-orange-600 transition-colors">About</NavLink>
             </div>

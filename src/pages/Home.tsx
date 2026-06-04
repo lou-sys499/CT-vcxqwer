@@ -40,11 +40,56 @@ export function Home() {
       [0];
   }, [allProducts]);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cordlesstoolz.com/"
+      }
+    ]
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the best cordless power tools for contractors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The best cordless power tools for contractors feature brushless motors, high-capacity lithium-ion batteries, and heavy-duty build quality. Leading brands include DeWalt, Makita, and Milwaukee."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long do cordless tool batteries last?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cordless tool batteries typically last between 3 to 5 years, or roughly 1,000 charge cycles, depending on usage intensity and charging habits."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use the same battery for different cordless tools?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, if the tools are from the same brand and share the same battery platform (e.g., 18V or 20V MAX). Always check manufacturer compatibility before swapping."
+        }
+      }
+    ]
+  };
+
   return (
     <div className="space-y-24 pb-24">
       <SEO 
         title="CordlessToolz | Professional Cordless Power Tools & Equipment"
         description="Discover professional-grade cordless power tools, vacuums, and heavy-duty equipment for your next project. Built to last." 
+        schema={[breadcrumbSchema, faqSchema]}
       />
       {/* Hero Section */}
       <section className="relative pt-32 lg:pt-48 pb-16 lg:pb-32 overflow-hidden text-center">
@@ -59,15 +104,20 @@ export function Home() {
                 <Zap className="w-4 h-4" /> 2026 Home & Workshop Gear
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter mb-8 text-balance mx-auto">
-                Shop Cordless <span className="text-orange-600 italic">Power Tools</span>, Vacuums & Tool Accessories Online.
+                Shop Cordless Power Tools, Vacuums & Tool Accessories Online
               </h1>
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto mb-10 text-balance">
-                From professional workshop drills to ultra-intelligent cordless vacuums. We curate the world's most innovative battery-powered utility gear.
-              </p>
+              <div className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-3xl mx-auto mb-10 space-y-4">
+                <p>
+                  Welcome to CordlessToolz, your premier destination to shop cordless power tools, vacuums, and tool accessories online. Whether you are a seasoned contractor looking for reliable <NavLink to="/category/power-tools" className="text-orange-600 hover:underline">Cordless Power Tools</NavLink>, or a DIY enthusiast enhancing your home workshop, we provide an extensive, expert-curated selection. 
+                </p>
+                <p>
+                  Browse high-performance drills, heavy-duty saws, and smart <NavLink to="/vacuums" className="text-orange-600 hover:underline">Cordless Vacuums</NavLink> designed to keep your workspace pristine. Upgrade your toolkit today with the top <NavLink to="/tool-accessories" className="text-orange-600 hover:underline">Tool Accessories</NavLink>, read our <NavLink to="/recipes" className="text-orange-600 hover:underline">DIY Project Recipes</NavLink>, and always remember to follow proper <a href="https://www.osha.gov/hand-power-tools" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Tool safety guidelines</a>.
+                </p>
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#top-picks" className="bg-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:bg-orange-700 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
-                  Top Picks This Week <ArrowRight className="w-5 h-5" />
-                </a>
+                <NavLink to="/category/power-tools" className="bg-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:bg-orange-700 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+                  Shop All Power Tools Now <ArrowRight className="w-5 h-5" />
+                </NavLink>
                 <NavLink to="/blog" className="bg-white text-slate-900 border-2 border-slate-200 px-8 py-4 rounded-xl font-bold text-lg hover:border-slate-400 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
                   Read Reviews <ChevronRight className="w-5 h-5" />
                 </NavLink>
@@ -84,9 +134,13 @@ export function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.2, delay: 0.2 }}
-                src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&q=80&w=1200" 
-                alt="Power Tool Background" 
+                src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&q=80&w=1200&fm=webp" 
+                alt="Cordless power tools and accessories for professional contractors" 
                 className="w-full h-full object-cover object-center scale-x-[-1]"
+                loading="eager"
+                decoding="sync"
+                // @ts-ignore - React 18 supports fetchpriority but types might not
+                fetchPriority="high"
               />
            </div>
         </div>
@@ -133,6 +187,7 @@ export function Home() {
               <div className="relative h-full min-h-[400px]">
                 <img 
                   loading="lazy"
+                  decoding="async"
                   src={topSmotureProduct.images[0]} 
                   alt={topSmotureProduct.name}
                   className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
@@ -148,8 +203,8 @@ export function Home() {
       {/* Featured Categories */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 text-center pt-10">
         <div className="mb-12">
-          <span className="text-orange-600 font-bold uppercase tracking-widest text-xs mb-2 block text-center">Departments</span>
-          <h2 className="text-4xl font-black text-slate-900 tracking-tight text-center">Pro Cleaning & Workshop.</h2>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight text-center">Professional Cordless Power Tools</h2>
+          <h3 className="text-orange-600 font-bold uppercase tracking-widest text-sm mt-4 block text-center">Tool Accessories for Every Job</h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -163,7 +218,7 @@ export function Home() {
                 whileHover={{ y: -4 }}
                 className="group relative h-64 rounded-3xl overflow-hidden cursor-pointer"
               >
-                <img loading="lazy" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} />
+                <img loading="lazy" decoding="async" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
                   <h3 className="text-xl font-bold text-white mb-1">{cat.name}</h3>
                   <p className="text-xs text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{cat.description}</p>
@@ -210,11 +265,10 @@ export function Home() {
           <div>
             <Zap className="w-12 h-12 text-orange-600 mb-6" />
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight tracking-tighter mb-6 md:mb-8">
-              Pro Insights. <br />
-              <span className="text-orange-600">Built</span> for Mastery.
+              Smart Cordless Vacuums for Home & Workspace
             </h2>
             <p className="text-lg text-slate-600 mb-10 text-balance">
-              Stay ahead with the latest tool tech deep-dives, field tests, and professional guides. Whether you're on a jobsite or in your home workshop, we provide the knowledge you need.
+              Stay ahead with the latest tool tech deep-dives, field tests, and professional guides. Whether you're on a jobsite or in your home workshop, we provide the knowledge you need on heavy-duty equipment.
             </p>
             <ul className="space-y-4 mb-10">
               {['New gear deep-dives', 'Maintenance guides', 'Industry news & updates'].map((item) => (
@@ -224,16 +278,17 @@ export function Home() {
                 </li>
               ))}
             </ul>
-            <NavLink to="/blog" className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-bold">
-              Explore Our Blog <ArrowRight className="w-5 h-5" />
+            <NavLink to="/vacuums" className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-bold">
+              Shop Vacuums <ArrowRight className="w-5 h-5" />
             </NavLink>
           </div>
           <div className="relative group">
             <div className="bg-slate-50 rounded-3xl p-4 md:p-8 transform rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-slate-200 aspect-video overflow-hidden">
                 <img 
                   loading="lazy"
-                  src="https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&q=80&w=800" 
-                  alt="Blog Preview"
+                  decoding="async"
+                  src="https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&q=80&w=800&fm=webp" 
+                  alt="Heavy-duty cordless vacuum cleaner in action"
                   className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity">
@@ -256,6 +311,7 @@ export function Home() {
           <div>
             <img 
               loading="lazy"
+              decoding="async"
               src="https://img.magnific.com/premium-psd/psd-chinese-construction-engineer-with-arms-crossed-construction-management-concept_401927-3393.jpg?semt=ais_incoming&w=740&q=80" 
               alt="Marcus Chen" 
               className="w-16 h-16 object-cover bg-slate-800 rounded-full mx-auto mb-4 border-2 border-orange-600" 
@@ -263,6 +319,27 @@ export function Home() {
             />
             <p className="text-white font-bold">Marcus Chen</p>
             <p className="text-slate-500 text-sm">Lead Foreman, Skyline Construction</p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="max-w-4xl mx-auto px-4 md:px-8 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Frequently Asked Questions</h2>
+        </div>
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">What are the best cordless power tools for contractors?</h3>
+            <p className="text-slate-600">The best cordless power tools for contractors feature brushless motors, high-capacity lithium-ion batteries, and heavy-duty build quality. Leading brands include DeWalt, Makita, and Milwaukee.</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">How long do cordless tool batteries last?</h3>
+            <p className="text-slate-600">Cordless tool batteries typically last between 3 to 5 years, or roughly 1,000 charge cycles, depending on usage intensity and charging habits.</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Can I use the same battery for different cordless tools?</h3>
+            <p className="text-slate-600">Yes, if the tools are from the same brand and share the same battery platform (e.g., 18V or 20V MAX). Always check manufacturer compatibility before swapping.</p>
           </div>
         </div>
       </section>

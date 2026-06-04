@@ -2,7 +2,6 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -30,35 +29,33 @@ async function startServer() {
       return res.status(400).json({ error: "Missing required fields" });
     }
     
-    // Support an array or a single string
-    const recipients = Array.isArray(to) ? to.join(", ") : to;
-    
-    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-
-    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-      return res.status(500).json({ error: "SMTP configuration is missing. Please add SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS variables." });
-    }
-
     try {
-      const transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: parseInt(SMTP_PORT || "2525", 10),
-        auth: {
-          user: SMTP_USER,
-          pass: SMTP_PASS,
-        },
-      });
+      const { MailtrapClient } = await import("mailtrap");
+      // Use the provided token or fallback to environment variable
+      const TOKEN = process.env.MAILTRAP_TOKEN || "3bdb21554f9009462366d0c447b7d198";
       
-      await transporter.sendMail({
-        from: '"CordlessToolz Notifications" <hello@example.com>',
+      const client = new MailtrapClient({ token: TOKEN });
+      
+      const sender = {
+        email: "support@cordlesstoolz.com",
+        name: "Mailtrap Test",
+      };
+      
+      // Support array of emails or single email string
+      const recipientsList = Array.isArray(to) ? to : [to];
+      const recipients = recipientsList.map(email => ({ email }));
+
+      await client.send({
+        from: sender,
         to: recipients,
         subject: subject,
         text: text,
+        category: "Order Notification",
       });
 
       res.json({ success: true });
     } catch (error: any) {
-      console.error("Nodemailer SMTP Error:", error);
+      console.error("Mailtrap Error:", error);
       res.status(500).json({ error: error.message || "Failed to send email" });
     }
   });
