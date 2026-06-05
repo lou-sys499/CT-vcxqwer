@@ -7,7 +7,7 @@ export function ShippingPolicy() {
     <div className="max-w-4xl mx-auto px-4 py-20 md:py-32">
       <SEO 
         title="Shipping Policy | CordlessToolz"
-        description="Learn about the CordlessToolz shipping policy, rates, delivery timelines, and procedures." 
+        description="Acquire details on CordlessToolz domestic and commercial transport, quick dispatch services, shipping costs, and safe package tracking capabilities." 
       />
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Shipping Policy</h1>

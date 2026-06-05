@@ -24,7 +24,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <NavLink to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden bg-slate-50">
         <img 
           src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} 
-          alt={product.name} 
+          alt={`Shop ${product.brand} ${product.name} cordless power tools & accessories online`} 
           className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-500"
           width="400"
           height="400"

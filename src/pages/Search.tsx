@@ -58,7 +58,7 @@ export function Search() {
     <div className="pt-24 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SEO 
         title={`Search results for "${query}" | CordlessToolz`}
-        description={`Explore search results for "${query}" on CordlessToolz.`} 
+        description={`Browse complete inventory matches and find detailed specifications for "${query}" on CordlessToolz. High-grade tools, vacuums, and professional accessories.`} 
       />
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-black text-slate-900 mb-4">Search Results</h1>

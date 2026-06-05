@@ -91,7 +91,7 @@ export function OrderSuccess() {
     <div className="pt-24 pb-24 min-h-screen flex items-center justify-center bg-slate-50">
       <SEO 
         title="Order Successful | CordlessToolz"
-        description="Your order has been successfully placed at CordlessToolz." 
+        description="Thank you for shopping at CordlessToolz. Your secure purchase step is complete, your invoice has been registered, and dispatch preparation is underway." 
       />
       <div className="max-w-xl w-full px-4">
         <motion.div 

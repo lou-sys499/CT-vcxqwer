@@ -9,6 +9,7 @@ import { CATEGORIES as STATIC_CATEGORIES, PRODUCTS as STATIC_PRODUCTS } from '..
 import { getFirestoreCategories, getFirestoreProducts, updateFirestoreProduct, deleteFirestoreProduct, updateFirestoreCategory, deleteFirestoreCategory } from '../services/productService';
 import { Category, BlogPost, Product } from '../types';
 import { addBlogPost, getBlogPosts, deleteBlogPost, updateBlogPost } from '../services/blogService';
+import { SEO } from '../components/SEO';
 
 export function Admin() {
   const { user, loading, isAdmin } = useAuth();
@@ -110,6 +111,7 @@ export function Admin() {
   if (!user || !isAdmin) {
     return (
       <div className="pt-40 pb-24 text-center">
+        <SEO title="Admin Login | CordlessToolz" description="Command Center login portal." noindex={true} />
         <div className="max-w-md mx-auto bg-white rounded-3xl p-12 premium-shadow border border-slate-100">
           <Layout className="w-16 h-16 text-orange-600 mx-auto mb-6" />
           <h1 className="text-3xl font-black text-slate-900 mb-4">Admin Access</h1>
@@ -433,6 +435,7 @@ export function Admin() {
 
   return (
     <div className="pt-24 pb-24 min-h-screen bg-slate-50">
+      <SEO title="Command Center | CordlessToolz" description="Control panel dashboard for inventory, articles, and reviews." noindex={true} />
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>

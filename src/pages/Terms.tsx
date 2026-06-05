@@ -7,7 +7,7 @@ export function TermsOfService() {
     <div className="max-w-4xl mx-auto px-4 py-20 md:py-32">
       <SEO 
         title="Terms of Service | CordlessToolz"
-        description="Read the CordlessToolz Terms of Service to understand our rules, guidelines, and policies." 
+        description="Review the complete CordlessToolz Terms of service, customer responsibilities, warranty obligations, intellectual property conditions, and user rights." 
       />
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Terms of Service</h1>

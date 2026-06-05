@@ -193,8 +193,8 @@ export function Category() {
     <div className="pt-24 pb-24 min-h-screen">
       {category && (
         <SEO 
-          title={`${category.name} | CordlessToolz`}
-          description={category.description} 
+          title={`${category.name.toLowerCase().includes('cordless') ? category.name : 'Cordless ' + category.name}`}
+          description={`Browse professional-grade cordless ${category.name.toLowerCase()} and premium power tools at CordlessToolz. Guaranteed durability for elite contractors.`} 
         />
       )}
       {/* Header */}
@@ -206,10 +206,10 @@ export function Category() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>
                 <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-4">
-                  {category?.name || <span className="inline-block h-12 w-64 bg-slate-200 animate-pulse rounded-lg"></span>}
+                  {category?.name ? (category.name.toLowerCase().includes('cordless') ? category.name : `Cordless ${category.name}`) : <span className="inline-block h-12 w-64 bg-slate-200 animate-pulse rounded-lg"></span>}
                 </h1>
                 <p className="text-slate-500 max-w-2xl leading-relaxed">
-                  {category?.description || <span className="inline-block h-6 w-full max-w-md bg-slate-100 animate-pulse rounded"></span>}
+                  {category?.name ? `Browse our premium selection of cordless ${category.name.toLowerCase()} and high-performance power tools built for heavy-duty contractors.` : <span className="inline-block h-6 w-full max-w-md bg-slate-100 animate-pulse rounded"></span>}
                 </p>
               </div>
           </div>

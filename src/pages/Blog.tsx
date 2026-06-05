@@ -53,7 +53,7 @@ export function Blog() {
   const schemaMarkup = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "The ProTool Blog",
+    "name": "The Cordless Blog",
     "description": "Expert guides, tool reviews, and industry insights.",
     "url": window.location.href,
     "blogPost": posts.map(post => ({
@@ -67,8 +67,8 @@ export function Blog() {
   return (
     <div className="pt-32 pb-24 min-h-screen bg-slate-50">
       <SEO 
-        title="ProTool Blog | Hardware News, Reviews & Buyer Guides"
-        description="Read the latest ProTool blog posts for rigorous field tests, comprehensive buying guides, and news about the newest cordless tools and accessories." 
+        title="The Cordless Blog | Hardware News, Reviews & Buyer Guides"
+        description="Read the latest Cordless blog posts for rigorous field tests, comprehensive buying guides, and news about the newest cordless tools and accessories." 
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }} />
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -79,7 +79,7 @@ export function Blog() {
               animate={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
             >
-              The <span className="text-orange-600">ProTool</span> Blog
+              The <span className="text-orange-600">Cordless</span> Blog
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -87,7 +87,7 @@ export function Blog() {
               transition={{ delay: 0.1 }}
               className="text-lg text-slate-600 max-w-2xl"
             >
-              Expert guides, tool reviews, and industry insights.
+              Expert cordless power tools guides, pro-grade field reviews, and workshop industry insights.
             </motion.p>
           </div>
 

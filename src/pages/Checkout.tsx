@@ -143,7 +143,7 @@ export function Checkout() {
     <div className="pt-24 pb-24 bg-slate-50 min-h-screen">
       <SEO 
         title="Secure Checkout | CordlessToolz"
-        description="Securely complete your purchase at CordlessToolz." 
+        description="Securely complete your purchase at CordlessToolz using our encrypted billing console. We accept all major credit cards and protect customer credentials." 
       />
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-widest text-slate-400">

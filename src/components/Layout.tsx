@@ -304,30 +304,32 @@ export function Footer() {
         <div>
           <h4 className="text-white font-bold mb-6">Shop Core Categories</h4>
           <ul className="space-y-4 text-sm">
-            <li><NavLink to="/" className="hover:text-white transition-colors">All Products</NavLink></li>
-            <li><NavLink to="/category/cordless-vacuums" className="hover:text-white transition-colors">Cordless Vacuums</NavLink></li>
-            <li><NavLink to="/category/power-tools" className="hover:text-white transition-colors">Power Tools</NavLink></li>
-            <li><NavLink to="/search?q=" className="hover:text-white transition-colors">Search & Browse</NavLink></li>
+            <li><NavLink to="/" className="hover:text-white transition-colors">Browse Professional Cordless Tools Catalog</NavLink></li>
+            <li><NavLink to="/category/cordless-vacuums" className="hover:text-white transition-colors">Shop High-Efficiency Battery Vacuums</NavLink></li>
+            <li><NavLink to="/category/power-tools" className="hover:text-white transition-colors">Explore Rugged Contractor Power Tools</NavLink></li>
+            <li><NavLink to="/tool-accessories" className="hover:text-white transition-colors">Upgrade Specialized Gear & Accessories</NavLink></li>
+            <li><NavLink to="/search?q=" className="hover:text-white transition-colors">Search the Complete Inventory Directory</NavLink></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-bold mb-6">Support & Help</h4>
           <ul className="space-y-4 text-sm">
-            <li><a href="mailto:support@cordlesstoolz.com" className="hover:text-white transition-colors">Contact Support</a></li>
-            <li><NavLink to="/shipping-policy" className="hover:text-white transition-colors">Shipping Policy</NavLink></li>
-            <li><NavLink to="/refund-policy" className="hover:text-white transition-colors">Returns & Refunds</NavLink></li>
-            <li><NavLink to="/sitemap" className="hover:text-white transition-colors">Store Sitemap</NavLink></li>
+            <li><a href="mailto:support@cordlesstoolz.com" className="hover:text-white transition-colors">Contact Support Staff Directly</a></li>
+            <li><NavLink to="/shipping-policy" className="hover:text-white transition-colors">Review Shipping Speed & Processing Rates</NavLink></li>
+            <li><NavLink to="/refund-policy" className="hover:text-white transition-colors">Examine 90-Day Return & Refund Guarantees</NavLink></li>
+            <li><NavLink to="/sitemap" className="hover:text-white transition-colors">Navigate Complete Sitemap Directory</NavLink></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-bold mb-6">Discover & Learn</h4>
           <ul className="space-y-4 text-sm">
-            <li><NavLink to="/about" className="hover:text-white transition-colors">Our Story</NavLink></li>
-            <li><NavLink to="/blog" className="hover:text-white transition-colors">Buying Guides</NavLink></li>
-            <li><NavLink to="/blog" className="hover:text-white transition-colors">Field Reviews</NavLink></li>
-            <li><NavLink to="/blog" className="hover:text-white transition-colors">News & Updates</NavLink></li>
+            <li><NavLink to="/about" className="hover:text-white transition-colors">Explore Customer Centered Values & Core Story</NavLink></li>
+            <li><NavLink to="/blog" className="hover:text-white transition-colors">Browse Professional Buying Recommendations</NavLink></li>
+            <li><NavLink to="/recipes" className="hover:text-white transition-colors">Build with DIY Project Modification Recipes</NavLink></li>
+            <li><NavLink to="/vacuums" className="hover:text-white transition-colors">Research Vacuum Engineering & Airflow Details</NavLink></li>
+            <li><NavLink to="/admin" className="hover:text-white transition-colors">Authorized Personnel Command Control Center</NavLink></li>
           </ul>
         </div>
 

@@ -74,16 +74,33 @@ export function SEOAnalyzer() {
       const pText = firstNonEmptyP ? (firstNonEmptyP.textContent || '').trim() : '';
       setPageFirstParagraph(pText);
 
-      // Scrape current original page title (if override isn't active)
-      setDocumentTitleOriginal(document.title || '');
+      // Scrape current original page title while filtering out our own panel override
+      const titleTags = Array.from(document.querySelectorAll('title'));
+      const pageTitleTags = titleTags.filter(t => {
+        const text = t.textContent || '';
+        if (titleOverride && text === titleOverride) return false;
+        return true;
+      });
+      const helmetTitleTag = pageTitleTags.find(t => t.hasAttribute('data-rh'));
+      const fallbackTitleTag = pageTitleTags.find(t => !t.hasAttribute('data-rh'));
+      const origTitle = helmetTitleTag 
+        ? helmetTitleTag.textContent || ''
+        : (fallbackTitleTag ? fallbackTitleTag.textContent || '' : '');
+      
+      setDocumentTitleOriginal(origTitle);
 
-      // Scrape current original description from existing meta tags (pre-override)
-      // Since Helmet overrides on the fly, let's find the non-overridden meta tags if possible, or fallback
-      const nonOverrideMeta = Array.from(document.querySelectorAll('meta[name="description"]'))
-        .filter(meta => !meta.hasAttribute('data-rh'));
-      const origDesc = nonOverrideMeta.length > 0 
-        ? nonOverrideMeta[0].getAttribute('content') || ''
-        : document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+      // Scrape current original description while filtering out our own panel override
+      const descTags = Array.from(document.querySelectorAll('meta[name="description"]'));
+      const pageDescTags = descTags.filter(meta => {
+        const content = meta.getAttribute('content') || '';
+        if (descOverride && content === descOverride) return false;
+        return true;
+      });
+      const helmetDescTag = pageDescTags.find(meta => meta.hasAttribute('data-rh'));
+      const fallbackDescTag = pageDescTags.find(meta => !meta.hasAttribute('data-rh'));
+      const origDesc = helmetDescTag 
+        ? helmetDescTag.getAttribute('content') || ''
+        : (fallbackDescTag ? fallbackDescTag.getAttribute('content') || '' : '');
       
       setHelmetDescriptionOriginal(origDesc);
     };

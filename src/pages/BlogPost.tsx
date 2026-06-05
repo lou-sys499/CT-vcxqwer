@@ -87,7 +87,7 @@ export function BlogPostPage() {
     <article className="pt-32 pb-24 min-h-screen bg-white">
       {post && (
         <SEO 
-          title={`${post.title} | ProTool Blog`}
+          title={`${post.title} | Cordless Blog`}
           description={post.excerpt} 
         />
       )}

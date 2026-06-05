@@ -88,7 +88,7 @@ export function Home() {
     <div className="space-y-24 pb-24">
       <SEO 
         title="CordlessToolz | Professional Cordless Power Tools & Equipment"
-        description="Discover professional-grade cordless power tools, vacuums, and heavy-duty equipment for your next project. Built to last." 
+        description="Discover professional-grade cordless power tools, high-capacity vacuums, and robust contractor accessories for your next workshop build at CordlessToolz." 
         schema={[breadcrumbSchema, faqSchema]}
       />
       {/* Hero Section */}
@@ -211,19 +211,19 @@ export function Home() {
           <h3 className="text-orange-600 font-bold uppercase tracking-widest text-sm mt-4 block text-center">Tool Accessories for Every Job</h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {categories.map((cat, i) => (
             <NavLink
               key={cat.id}
               to={`/category/${cat.slug}`}
-              className="block"
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] min-w-[260px] max-w-[320px] block"
             >
               <motion.div
                 whileHover={{ y: -4 }}
                 className="group relative h-64 rounded-3xl overflow-hidden cursor-pointer"
               >
-                <img loading="lazy" decoding="async" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} width="300" height="256" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
+                <img loading="lazy" decoding="async" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={`Premium high-performance ${cat.name.toLowerCase()} cordless power tools and accessories`} width="300" height="256" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-6 flex flex-col justify-end items-center text-center">
                   <h3 className="text-xl font-bold text-white mb-1">{cat.name}</h3>
                   <p className="text-xs text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{cat.description}</p>
                 </div>

@@ -7,7 +7,7 @@ export function PrivacyPolicy() {
     <div className="max-w-4xl mx-auto px-4 py-20 md:py-32">
       <SEO 
         title="Privacy Policy | CordlessToolz"
-        description="Read the CordlessToolz Privacy Policy to understand how we collect, use, and protect your information." 
+        description="Read the official CordlessToolz Privacy Policy. Learn about our commitment to secure cryptography, cookies usage, and digital privacy safeguards." 
       />
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Privacy Policy</h1>

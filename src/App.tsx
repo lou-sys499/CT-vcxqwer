@@ -36,7 +36,7 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  return <SEO url={typeof window !== 'undefined' ? window.location.href.split('?')[0] : ''} />;
+  return null;
 }
 
 export default function App() {

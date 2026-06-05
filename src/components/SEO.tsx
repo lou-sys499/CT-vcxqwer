@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { generateSeoConfig } from '../utils/seo';
+import { useLocation } from 'react-router-dom';
 
 export interface SEOProps {
   title?: string;
@@ -22,7 +23,9 @@ export function SEO({
   schema,
   noindex = false
 }: SEOProps) {
-  const seoConfig = generateSeoConfig({ title, description, url, keywords, ogImage, ogType });
+  const location = useLocation();
+  const resolvedUrl = url || location.pathname;
+  const seoConfig = generateSeoConfig({ title, description, url: resolvedUrl, keywords, ogImage, ogType });
 
   // Default Organization Schema
   const defaultSchema = {
