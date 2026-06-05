@@ -127,7 +127,7 @@ export function ProductDetail() {
                   onClick={() => setActiveImage(img)}
                   className="bg-white rounded-2xl border border-slate-100 cursor-pointer hover:border-orange-600 transition-colors aspect-square overflow-hidden p-4"
                 >
-                   <img src={img} className="w-full h-full object-contain opacity-50 hover:opacity-100 transition-opacity" width="100" height="100" />
+                   <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="w-full h-full object-contain opacity-50 hover:opacity-100 transition-opacity" width="100" height="100" />
                 </div>
               ))}
             </div>

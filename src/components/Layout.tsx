@@ -271,7 +271,7 @@ export function Footer() {
           <div className="flex items-center gap-3 mb-6">
             <img 
               src="https://i.postimg.cc/mkb6RVph/cordlesstoolz-logo.png" 
-              alt="Logo"
+              alt="CordlessToolz Footer Logo"
               referrerPolicy="no-referrer"
               className="w-8 h-8 object-contain"
               width="32"

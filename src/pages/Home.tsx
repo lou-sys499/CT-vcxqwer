@@ -141,6 +141,8 @@ export function Home() {
                 decoding="sync"
                 // @ts-ignore - React 18 supports fetchpriority but types might not
                 fetchPriority="high"
+                width="1200"
+                height="800"
               />
            </div>
         </div>

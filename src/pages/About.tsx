@@ -97,7 +97,7 @@ export function About() {
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-orange-900/10">
               <img 
                 src="https://i.postimg.cc/GmYBzNrd/cordlesstoolz-teamphoto.jpg" 
-                alt="Tool testing" 
+                alt="CordlessToolz team testing cordless power tools in the workshop for performance and safety" 
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
                 width="480"

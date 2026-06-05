@@ -447,6 +447,68 @@ export function Admin() {
           </button>
         </div>
 
+        {/* Developer SEO Crawling & Search Ranking Setup Prompt */}
+        <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-[2.5rem] p-8 md:p-10 text-white shadow-2xl shadow-orange-500/20 mb-12 relative overflow-hidden">
+          <div className="absolute top-0 right-0 translate-x-12 -translate-y-12 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="bg-white/20 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                <Zap className="w-3.5 h-3.5" /> Dev Setup Warning
+              </span>
+              <span className="text-sm font-bold text-orange-100">Action Required</span>
+            </div>
+            
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-4 leading-tight">
+              Setup React for SEO Crawling & Google Search Ranking
+            </h2>
+            <p className="text-orange-50 max-w-4xl text-sm md:text-base leading-relaxed mb-6 font-medium">
+              Because search engine crawlers rely on pre-rendered content for perfect indexing, please ensure you finalize the server-side hydration configurations. Follow this technical guide to claim maximum search engine authority:
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 bg-black/15 p-6 rounded-3xl border border-white/10">
+              <div className="space-y-4">
+                <h3 className="font-extrabold uppercase tracking-widest text-xs text-orange-205 flex items-center gap-2">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-[10px] font-black">1</span>
+                  Pre-Rendering & SSG/SSR
+                </h3>
+                <p className="text-xs text-orange-50 leading-relaxed pl-7">
+                  Configure **Vite Built-In Dev SSR** or **vite-plugin-ssr** to serve fully populated static HTML on raw requests. This guarantees spiders index the real text without requiring browser-engine JS execution.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-extrabold uppercase tracking-widest text-xs text-orange-205 flex items-center gap-2">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-[10px] font-black">2</span>
+                  Claim Google Search Console (GSC)
+                </h3>
+                <p className="text-xs text-orange-50 leading-relaxed pl-7">
+                  Establish ownership of the domain in GSC inside their dashboard and submit the dynamically generated sitemap from **/sitemap.xml** to register all current store items, brands, and deep-link contents.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-extrabold uppercase tracking-widest text-xs text-orange-205 flex items-center gap-2">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-[10px] font-black">3</span>
+                  React Helmet & Meta Dynamic Sync
+                </h3>
+                <p className="text-xs text-orange-50 leading-relaxed pl-7">
+                  Ensure all `SEO.tsx` outputs use `data-rh="true"` attributes to override baseline index tags seamlessly once hydrations start. Inspect head logs at runtime.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-extrabold uppercase tracking-widest text-xs text-orange-205 flex items-center gap-2">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-[10px] font-black">4</span>
+                  Deploy Robots & Crawl Directives
+                </h3>
+                <p className="text-xs text-orange-50 leading-relaxed pl-7">
+                  Keep our strict server rules active inside `/server.ts` to block indexation of admin portals, and ensure sitemaps update instantly on inventory modification events.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-12 gap-12">
           {/* Sidebar Tabs */}
           <div className="lg:col-span-3 space-y-2">
@@ -702,7 +764,7 @@ export function Admin() {
                     {products.map((product) => (
                       <div key={product.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all">
                         <div className="col-span-1">
-                          <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-10 h-10 object-contain" alt="" width="40" height="40" />
+                          <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-10 h-10 object-contain" alt={product.name} width="40" height="40" />
                         </div>
                         <div className="col-span-5">
                           <p className="font-bold text-slate-900 leading-none mb-1">{product.name}</p>
@@ -852,7 +914,7 @@ export function Admin() {
                     {categories.map((category) => (
                       <div key={category.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all">
                         <div className="col-span-2">
-                          <img src={category.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" width="48" height="48" />
+                          <img src={category.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt={category.name} width="48" height="48" />
                         </div>
                         <div className="col-span-8">
                           <p className="font-bold text-slate-900 leading-none mb-1">{category.name}</p>
@@ -982,7 +1044,7 @@ export function Admin() {
                     blogPosts.map((post) => (
                       <div key={post.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all mt-2">
                         <div className="col-span-8 flex items-center gap-4">
-                           <img src={post.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" width="48" height="48" />
+                           <img src={post.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt={post.title} width="48" height="48" />
                            <div>
                              <p className="font-bold text-slate-900 leading-tight mb-1">{post.title}</p>
                              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{post.category} • {post.readTime}</p>
