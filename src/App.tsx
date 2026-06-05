@@ -10,6 +10,7 @@ import { Navbar, Footer } from './components/Layout';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { SEO } from './components/SEO';
+import { SEOAnalyzer } from './components/SEOAnalyzer';
 
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
 const Category = lazy(() => import('./pages/Category').then(m => ({ default: m.Category })));
@@ -76,6 +77,7 @@ export default function App() {
                 </Suspense>
               </main>
               <Footer />
+              <SEOAnalyzer />
             </div>
           </Router>
         </CartProvider>

@@ -205,13 +205,13 @@ export function Category() {
           </NavLink>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>
-              <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-4">
-                {category?.name || <div className="h-12 w-64 bg-slate-200 animate-pulse rounded-lg"></div>}
-              </h1>
-              <p className="text-slate-500 max-w-2xl leading-relaxed">
-                {category?.description || <div className="h-6 w-full max-w-md bg-slate-100 animate-pulse rounded"></div>}
-              </p>
-            </div>
+                <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none mb-4">
+                  {category?.name || <span className="inline-block h-12 w-64 bg-slate-200 animate-pulse rounded-lg"></span>}
+                </h1>
+                <p className="text-slate-500 max-w-2xl leading-relaxed">
+                  {category?.description || <span className="inline-block h-6 w-full max-w-md bg-slate-100 animate-pulse rounded"></span>}
+                </p>
+              </div>
           </div>
         </div>
       </div>
