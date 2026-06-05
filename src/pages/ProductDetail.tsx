@@ -116,6 +116,8 @@ export function ProductDetail() {
                 src={activeImage || product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} 
                 alt={product.name} 
                 className="w-full h-full object-contain"
+                width="600"
+                height="600"
               />
             </div>
             <div className="grid grid-cols-4 gap-4">
@@ -125,7 +127,7 @@ export function ProductDetail() {
                   onClick={() => setActiveImage(img)}
                   className="bg-white rounded-2xl border border-slate-100 cursor-pointer hover:border-orange-600 transition-colors aspect-square overflow-hidden p-4"
                 >
-                   <img src={img} className="w-full h-full object-contain opacity-50 hover:opacity-100 transition-opacity" />
+                   <img src={img} className="w-full h-full object-contain opacity-50 hover:opacity-100 transition-opacity" width="100" height="100" />
                 </div>
               ))}
             </div>

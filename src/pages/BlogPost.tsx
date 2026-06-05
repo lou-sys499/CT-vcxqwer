@@ -143,7 +143,7 @@ export function BlogPostPage() {
           transition={{ delay: 0.2 }}
           className="aspect-video rounded-[2.5rem] overflow-hidden mb-16 shadow-2xl shadow-slate-200"
         >
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+          <img src={post.image} alt={post.title} className="w-full h-full object-cover" width="1200" height="675" />
         </motion.div>
 
         <motion.div 

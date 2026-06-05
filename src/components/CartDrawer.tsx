@@ -64,7 +64,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                 cart.filter(Boolean).map((item) => (
                   <div key={item.id} className="flex gap-4 group">
                     <div className="w-24 h-24 bg-slate-50 rounded-2xl p-2 border border-slate-100 overflow-hidden flex items-center justify-center shrink-0">
-                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
+                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform" width="96" height="96" />
                     </div>
                     <div className="flex-grow flex flex-col justify-between">
                       <div>

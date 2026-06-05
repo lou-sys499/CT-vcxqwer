@@ -131,6 +131,8 @@ export function Blog() {
                     src={post.image} 
                     alt={post.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    width="600"
+                    height="337"
                   />
                   <div className="absolute top-4 left-4">
                     <span className="bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">

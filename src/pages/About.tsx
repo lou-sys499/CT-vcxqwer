@@ -100,6 +100,8 @@ export function About() {
                 alt="Tool testing" 
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
+                width="480"
+                height="600"
               />
             </div>
             <div className="absolute -bottom-8 -left-8 bg-orange-600 p-8 rounded-3xl text-white shadow-2xl">

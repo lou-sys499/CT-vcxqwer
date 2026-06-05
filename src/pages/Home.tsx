@@ -191,6 +191,8 @@ export function Home() {
                   src={topSmotureProduct.images[0]} 
                   alt={topSmotureProduct.name}
                   className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                  width="600"
+                  height="450"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-transparent to-transparent lg:block hidden" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent lg:hidden block" />
@@ -218,7 +220,7 @@ export function Home() {
                 whileHover={{ y: -4 }}
                 className="group relative h-64 rounded-3xl overflow-hidden cursor-pointer"
               >
-                <img loading="lazy" decoding="async" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} />
+                <img loading="lazy" decoding="async" src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={cat.name} width="300" height="256" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
                   <h3 className="text-xl font-bold text-white mb-1">{cat.name}</h3>
                   <p className="text-xs text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{cat.description}</p>
@@ -290,6 +292,8 @@ export function Home() {
                   src="https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&q=80&w=800&fm=webp" 
                   alt="Heavy-duty cordless vacuum cleaner in action"
                   className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700"
+                  width="600"
+                  height="337"
                 />
                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity">
                   <span className="text-white font-black text-4xl tracking-tighter uppercase italic">The Field Report</span>
@@ -316,6 +320,8 @@ export function Home() {
               alt="Marcus Chen" 
               className="w-16 h-16 object-cover bg-slate-800 rounded-full mx-auto mb-4 border-2 border-orange-600" 
               referrerPolicy="no-referrer"
+              width="64"
+              height="64"
             />
             <p className="text-white font-bold">Marcus Chen</p>
             <p className="text-slate-500 text-sm">Lead Foreman, Skyline Construction</p>

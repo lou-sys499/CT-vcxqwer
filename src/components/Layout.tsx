@@ -52,6 +52,8 @@ export function Navbar() {
                 alt="CordlessToolz Logo"
                 referrerPolicy="no-referrer"
                 className="w-10 h-10 object-contain"
+                width="40"
+                height="40"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=100";
                 }}
@@ -272,6 +274,8 @@ export function Footer() {
               alt="Logo"
               referrerPolicy="no-referrer"
               className="w-8 h-8 object-contain"
+              width="32"
+              height="32"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=100";
               }}

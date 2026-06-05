@@ -341,7 +341,7 @@ export function Checkout() {
                 {cart.filter(Boolean).map((item) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-20 h-20 bg-slate-50 rounded-2xl p-2 border border-slate-100 shrink-0">
-                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain" />
+                      <img src={item?.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} alt={item?.name} className="w-full h-full object-contain" width="80" height="80" />
                     </div>
                     <div className="flex-grow">
                       <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1">{item?.name}</h4>

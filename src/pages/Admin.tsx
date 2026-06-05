@@ -702,7 +702,7 @@ export function Admin() {
                     {products.map((product) => (
                       <div key={product.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all">
                         <div className="col-span-1">
-                          <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-10 h-10 object-contain" alt="" />
+                          <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-10 h-10 object-contain" alt="" width="40" height="40" />
                         </div>
                         <div className="col-span-5">
                           <p className="font-bold text-slate-900 leading-none mb-1">{product.name}</p>
@@ -852,7 +852,7 @@ export function Admin() {
                     {categories.map((category) => (
                       <div key={category.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all">
                         <div className="col-span-2">
-                          <img src={category.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" />
+                          <img src={category.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" width="48" height="48" />
                         </div>
                         <div className="col-span-8">
                           <p className="font-bold text-slate-900 leading-none mb-1">{category.name}</p>
@@ -982,7 +982,7 @@ export function Admin() {
                     blogPosts.map((post) => (
                       <div key={post.id} className="grid grid-cols-12 gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-orange-600 transition-all mt-2">
                         <div className="col-span-8 flex items-center gap-4">
-                           <img src={post.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" />
+                           <img src={post.image || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} className="w-12 h-12 rounded-xl object-cover" alt="" width="48" height="48" />
                            <div>
                              <p className="font-bold text-slate-900 leading-tight mb-1">{post.title}</p>
                              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{post.category} • {post.readTime}</p>

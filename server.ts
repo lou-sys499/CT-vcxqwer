@@ -10,7 +10,7 @@ import compression from "compression";
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Set X-Robots-Tag header to ensure indexing
   app.use((req, res, next) => {
@@ -145,8 +145,8 @@ Sitemap: ${baseUrl}/sitemap.xml`);
       } catch(e) {}
 
       try {
-        const { getFirestorePosts } = await import("./src/services/blogService");
-        const posts = await getFirestorePosts();
+        const { getBlogPosts } = await import("./src/services/blogService");
+        const posts = await getBlogPosts();
         for(const post of posts) {
           res.write('  <url>\n');
           res.write(`    <loc>${baseUrl}/blog/${post.id}</loc>\n`);
@@ -186,8 +186,8 @@ Sitemap: ${baseUrl}/sitemap.xml`);
         }
         const canonicalUrl = `${baseUrl}${currentPath}`;
         const seoTags = `
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="${canonicalUrl}" />
+        <meta name="robots" content="index, follow" data-rh="true" />
+        <link rel="canonical" href="${canonicalUrl}" data-rh="true" />
         `;
         html = html.replace('</head>', `${seoTags}</head>`);
         res.send(html);
