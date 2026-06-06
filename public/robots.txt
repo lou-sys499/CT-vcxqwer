@@ -1,6 +1,4 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /dashboard/
-Disallow: /checkout/
+Allow: /
 
 Sitemap: https://cordlesstoolz.com/sitemap.xml
