@@ -86,6 +86,8 @@ async function startServer() {
     res.type('text/plain');
     res.send(`User-agent: *
 Allow: /
+Disallow: /checkout
+Disallow: /admin
 
 Sitemap: ${baseUrl}/sitemap.xml`);
   });

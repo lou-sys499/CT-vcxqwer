@@ -112,6 +112,8 @@ async function run() {
     // Write robots.txt as well
     const robotsContent = `User-agent: *
 Allow: /
+Disallow: /checkout
+Disallow: /admin
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `;
