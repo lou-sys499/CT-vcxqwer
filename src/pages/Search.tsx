@@ -5,6 +5,7 @@ import { getFirestoreProducts } from '../services/productService';
 import { Product } from '../types';
 import { PRODUCTS } from '../data';
 import { SEO } from '../components/SEO';
+import { LEGACY_PRODUCTS_MAPPING } from '../utils/legacyProducts';
 
 export function Search() {
   const [searchParams] = useSearchParams();
@@ -34,10 +35,24 @@ export function Search() {
 
   const searchResults = React.useMemo(() => {
     if (!query) return [];
-    const lowerQuery = query.toLowerCase();
+    const lowerQuery = query.toLowerCase().trim();
+    
+    // Find official IDs that match the search query via legacy aliases
+    const matchedOfficialIds = new Set<string>();
+    LEGACY_PRODUCTS_MAPPING.forEach(mapping => {
+      const isMatch = mapping.legacyNames.some(name => 
+        lowerQuery.includes(name) || name.includes(lowerQuery)
+      ) || mapping.legacyId.toLowerCase().includes(lowerQuery);
+      
+      if (isMatch) {
+        matchedOfficialIds.add(mapping.officialId);
+      }
+    });
+
     return allProducts.filter(p => {
       if (!p || !p.name) return false;
       return (
+        matchedOfficialIds.has(p.id) ||
         p.name.toLowerCase().includes(lowerQuery) || 
         p.description.toLowerCase().includes(lowerQuery) || 
         p.brand.toLowerCase().includes(lowerQuery) ||

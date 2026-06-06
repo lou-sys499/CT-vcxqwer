@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { useCart } from '../context/CartContext';
 import { CartDrawer } from './CartDrawer';
-import { CATEGORIES as STATIC_CATEGORIES, PRODUCTS } from '../data';
-import { Category } from '../types';
+import { CATEGORIES as STATIC_CATEGORIES } from '../data';
+import { Category, Product } from '../types';
+import { LEGACY_PRODUCTS_MAPPING } from '../utils/legacyProducts';
+import { getProductUrl } from '../utils/seo';
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -16,27 +18,55 @@ export function Navbar() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>(STATIC_CATEGORIES);
+  const [allProducts, setAllProducts] = React.useState<Product[]>([]);
   const { cartCount } = useCart();
 
   React.useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     
-    const fetchCats = async () => {
+    const fetchCatsAndProducts = async () => {
       try {
-        const { getFirestoreCategories } = await import('../services/productService');
+        const { getFirestoreCategories, getFirestoreProducts } = await import('../services/productService');
         const fbCats = await getFirestoreCategories();
         const combinedCats = [...STATIC_CATEGORIES, ...fbCats].filter(Boolean);
         const uniqueCats = Array.from(new Map(combinedCats.map(c => [c.id, c])).values());
         setCategories(uniqueCats);
+
+        const fbProducts = await getFirestoreProducts();
+        setAllProducts(fbProducts);
       } catch (err) {
-        console.error("Failed to fetch categories:", err);
+        console.error("Failed to fetch initial navbar data:", err);
       }
     };
-    fetchCats();
+    fetchCatsAndProducts();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const suggestions = React.useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const lower = searchQuery.toLowerCase().trim();
+    const matches: Product[] = [];
+    
+    allProducts.forEach(p => {
+      const nameMatch = p.name?.toLowerCase().includes(lower);
+      const brandMatch = p.brand?.toLowerCase().includes(lower);
+      const descMatch = p.description?.toLowerCase().includes(lower);
+      
+      const isLegacyMatch = LEGACY_PRODUCTS_MAPPING.some(mapping => 
+        mapping.officialId === p.id && 
+        mapping.legacyNames.some(legacyName => legacyName.includes(lower) || lower.includes(legacyName))
+      );
+
+      if (nameMatch || brandMatch || descMatch || isLegacyMatch) {
+        matches.push(p);
+      }
+    });
+
+    return matches.slice(0, 5);
+  }, [searchQuery, allProducts]);
+
 
   return (
     <>
@@ -81,10 +111,10 @@ export function Navbar() {
                 <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="bg-white shadow-xl rounded-xl p-4 border border-slate-100 min-w-[250px]">
                     <h4 className="font-bold text-xs uppercase text-slate-400 mb-2">Vacuums</h4>
-                    <NavLink to="/category/cordless-vacuums?brand=Smoture" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Smoture Cordless Vacuum Cleaner</NavLink>
-                    <NavLink to="/category/cordless-vacuums?brand=VacLife" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">VacLife Cordless Vacuum Cleaner</NavLink>
-                    <NavLink to="/category/cordless-vacuums?brand=Inteture" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Inteture Cordless Vacuum Cleaner</NavLink>
-                    <NavLink to="/category/cordless-vacuums?brand=Dolphin" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Dolphin Pool Cleaner Cordless</NavLink>
+                    <NavLink to="/product/Gfq4mE7ycIlFcIBLAwJ9" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Smoture VC70 Cordless Vacuum Cleaner</NavLink>
+                    <NavLink to="/product/WXVUNB4VdAHjPTHJKBVF" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">VacLife US726 Cordless Handheld Vacuum</NavLink>
+                    <NavLink to="/product/UhD1sUQ6K7rFWMvCyBqe" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Inteture Cordless Vacuum JR400</NavLink>
+                    <NavLink to="/product/H8nxPWb4gFbyc3vCmt0M" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Dolphin LIBERTY 200 Pool Cleaner</NavLink>
 
                   </div>
                 </div>
@@ -104,10 +134,10 @@ export function Navbar() {
                 <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="bg-white shadow-xl rounded-xl p-4 border border-slate-100 min-w-[250px]">
                     <h4 className="font-bold text-xs uppercase text-slate-400 mb-2">Power Tools</h4>
-                    <NavLink to="/category/power-tools?brand=Dewalt" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Dewalt Cordless Nailer</NavLink>
-                    <NavLink to="/category/power-tools?brand=Dewalt" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Dewalt 7 1/4 Circular Saw</NavLink>
-                    <NavLink to="/category/power-tools?brand=Generic" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Cordless Rivet Nut Tool</NavLink>
-                    <NavLink to="/category/power-tools?brand=Generic" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Cordless Nail Drill</NavLink>
+                    <NavLink to="/product/bJC3LXXaI6nnVx1LPDZQ" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">DeWalt 20V MAX* XR 18Ga Brad Nailer Kit</NavLink>
+                    <NavLink to="/product/DkEyWlilG9aPHXpLPpnB" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">DeWalt 20V MAX* XR Cordless 7-1/4 In. Circular Saw Kit</NavLink>
+                    <NavLink to="/product/IMe77QhP3Fp46n47EX22" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Rivet Nut Tool-30-R1</NavLink>
+                    <NavLink to="/product/hVZ0Rdg3yCTMk638A7XE" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">RYOBI 18V ONE+ HP Compact Brushless 1/2" Drill/Driver Kit</NavLink>
                   </div>
                 </div>
               </div>
@@ -140,6 +170,7 @@ export function Navbar() {
               </NavLink>
               
               {isSearchOpen && (
+                <div className="absolute left-4 right-4 top-full mt-2 md:mt-0 md:left-auto md:right-32 md:top-1/2 md:-translate-y-1/2 min-w-[320px] max-w-sm z-50">
                   <form 
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -148,7 +179,7 @@ export function Navbar() {
                         setIsSearchOpen(false);
                       }
                     }}
-                    className="absolute left-4 right-4 top-full mt-2 md:mt-0 md:left-auto md:right-32 md:top-1/2 md:-translate-y-1/2"
+                    className="relative"
                   >
                     <input
                       type="text"
@@ -156,10 +187,39 @@ export function Navbar() {
                       placeholder="Search products..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-4 py-3 md:py-2 border border-slate-200 rounded-full focus:outline-none focus:border-orange-500 shadow-xl md:shadow-none bg-white"
+                      className="w-full px-4 py-3 md:py-2 border border-slate-200 rounded-full focus:outline-none focus:border-orange-500 shadow-xl bg-white text-slate-800"
                     />
                   </form>
-                )}
+                  {suggestions.length > 0 && (
+                    <div className="absolute left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden py-2 max-h-[300px] overflow-y-auto">
+                      <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider border-b border-slate-100">
+                        Search Suggestions
+                      </div>
+                      {suggestions.map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => {
+                            navigate(getProductUrl(p));
+                            setSearchQuery('');
+                            setIsSearchOpen(false);
+                          }}
+                          className="px-4 py-3 hover:bg-slate-50 cursor-pointer transition-colors flex items-center gap-3 border-b border-slate-50 last:border-none"
+                        >
+                          <img
+                            src={p.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=100'}
+                            alt={p.name}
+                            className="w-8 h-8 object-contain rounded bg-slate-50"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-bold text-slate-900 truncate">{p.name}</p>
+                            <p className="text-xs text-orange-500 font-bold uppercase tracking-wider text-[9px]">{p.brand}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
                 
                 <button 
                   onClick={() => setIsSearchOpen(!isSearchOpen)}

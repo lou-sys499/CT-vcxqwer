@@ -90,8 +90,37 @@ Allow: /
 Sitemap: ${baseUrl}/sitemap.xml`);
   });
 
-  // Sitemap route
-  app.get("/sitemap.xml", async (req, res) => {
+  // Sitemap index route
+  app.get("/sitemap.xml", (req, res) => {
+    try {
+      const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
+      res.setHeader("Content-Type", "application/xml");
+      res.write('<?xml version="1.0" encoding="UTF-8"?>\n');
+      res.write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n');
+      
+      const sitemaps = [
+        '/sitemap-pages.xml',
+        '/sitemap-categories.xml',
+        '/sitemap-products.xml',
+        '/sitemap-blog.xml'
+      ];
+
+      for (const sm of sitemaps) {
+        res.write('  <sitemap>\n');
+        res.write(`    <loc>${baseUrl}${sm}</loc>\n`);
+        res.write('  </sitemap>\n');
+      }
+
+      res.write('</sitemapindex>\n');
+      res.end();
+    } catch (error) {
+      console.error("Sitemap index error:", error);
+      res.status(500).end();
+    }
+  });
+
+  // Sitemap - Pages
+  app.get("/sitemap-pages.xml", (req, res) => {
     try {
       const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
       const staticRoutes = [
@@ -102,14 +131,16 @@ Sitemap: ${baseUrl}/sitemap.xml`);
         '/privacy',
         '/shipping-policy',
         '/refund-policy',
-        '/sitemap'
+        '/sitemap',
+        '/vacuums',
+        '/tool-accessories',
+        '/recipes'
       ];
 
       res.setHeader("Content-Type", "application/xml");
       res.write('<?xml version="1.0" encoding="UTF-8"?>\n');
       res.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n');
 
-      // Add static routes
       for (const route of staticRoutes) {
         res.write('  <url>\n');
         res.write(`    <loc>${baseUrl}${route}</loc>\n`);
@@ -118,48 +149,98 @@ Sitemap: ${baseUrl}/sitemap.xml`);
         res.write('  </url>\n');
       }
 
-      try {
-        const { getFirestoreProducts } = await import("./src/services/productService");
-        const productsData = await getFirestoreProducts();
-        for (const p of productsData) {
-          res.write('  <url>\n');
-          res.write(`    <loc>${baseUrl}/product/${p.id}</loc>\n`);
-          res.write('    <changefreq>daily</changefreq>\n');
-          res.write('    <priority>0.9</priority>\n');
-          res.write('  </url>\n');
-        }
-      } catch (e) {
-        console.warn("Failed fetching products for sitemap using SDK", e);
-      }
+      res.write('</urlset>\n');
+      res.end();
+    } catch (e) {
+      res.status(500).end();
+    }
+  });
+
+  // Sitemap - Categories
+  app.get("/sitemap-categories.xml", async (req, res) => {
+    try {
+      const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
+      res.setHeader("Content-Type", "application/xml");
+      res.write('<?xml version="1.0" encoding="UTF-8"?>\n');
+      res.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n');
 
       try {
         const { getFirestoreCategories } = await import("./src/services/productService");
         const categories = await getFirestoreCategories();
-        for(const cat of categories) {
+        for (const cat of categories) {
            res.write('  <url>\n');
            res.write(`    <loc>${baseUrl}/category/${cat.slug || cat.id}</loc>\n`);
            res.write('    <changefreq>weekly</changefreq>\n');
            res.write('    <priority>0.8</priority>\n');
            res.write('  </url>\n');
         }
-      } catch(e) {}
+      } catch (e) {
+        console.warn("Error fetching categories for sitemap", e);
+      }
+
+      res.write('</urlset>\n');
+      res.end();
+    } catch (e) {
+      res.status(500).end();
+    }
+  });
+
+  // Sitemap - Products
+  app.get("/sitemap-products.xml", async (req, res) => {
+    try {
+      const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
+      res.setHeader("Content-Type", "application/xml");
+      res.write('<?xml version="1.0" encoding="UTF-8"?>\n');
+      res.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n');
+
+      try {
+        const { getFirestoreProducts } = await import("./src/services/productService");
+        const { getProductUrl } = await import("./src/utils/seo");
+        const productsData = await getFirestoreProducts();
+        for (const p of productsData) {
+          const urlPath = getProductUrl(p);
+          res.write('  <url>\n');
+          res.write(`    <loc>${baseUrl}${urlPath}</loc>\n`);
+          res.write('    <changefreq>daily</changefreq>\n');
+          res.write('    <priority>0.9</priority>\n');
+          res.write('  </url>\n');
+        }
+      } catch (e) {
+        console.warn("Failed fetching products for sitemap", e);
+      }
+
+      res.write('</urlset>\n');
+      res.end();
+    } catch (e) {
+      res.status(500).end();
+    }
+  });
+
+  // Sitemap - Blog
+  app.get("/sitemap-blog.xml", async (req, res) => {
+    try {
+      const baseUrl = process.env.CUSTOM_DOMAIN || `https://cordlesstoolz.com`;
+      res.setHeader("Content-Type", "application/xml");
+      res.write('<?xml version="1.0" encoding="UTF-8"?>\n');
+      res.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n');
 
       try {
         const { getBlogPosts } = await import("./src/services/blogService");
         const posts = await getBlogPosts();
-        for(const post of posts) {
+        for (const post of posts) {
           res.write('  <url>\n');
           res.write(`    <loc>${baseUrl}/blog/${post.id}</loc>\n`);
           res.write('    <changefreq>weekly</changefreq>\n');
           res.write('    <priority>0.7</priority>\n');
           res.write('  </url>\n');
         }
-      } catch(e) {}
+      } catch (e) {
+        console.warn("Failed fetching blog posts for sitemap", e);
+      }
 
       res.write('</urlset>\n');
       res.end();
-    } catch (error) {
-      console.error("Sitemap error:", error);
+    } catch (e) {
       res.status(500).end();
     }
   });

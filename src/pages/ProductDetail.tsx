@@ -10,9 +10,11 @@ import { cn } from '../lib/utils';
 import { ProductCard } from '../components/ProductUI';
 import { useCart } from '../context/CartContext';
 import { SEO } from '../components/SEO';
+import { getOfficialRedirectId } from '../utils/legacyProducts';
+import { getProductUrl } from '../utils/seo';
 
 export function ProductDetail() {
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [product, setProduct] = React.useState<Product | null>(null);
@@ -22,6 +24,12 @@ export function ProductDetail() {
 
   React.useEffect(() => {
     const fetchProduct = async () => {
+      if (!id) return;
+      const officialId = getOfficialRedirectId(id);
+      if (officialId && officialId !== id) {
+        navigate(`/product/${officialId}`, { replace: true });
+        return;
+      }
       setLoading(true);
       // Try static first
       const staticProduct = PRODUCTS.find(p => p.id === id);
@@ -29,6 +37,12 @@ export function ProductDetail() {
         setProduct(staticProduct);
         setActiveImage(staticProduct.images?.[0] || '');
         setLoading(false);
+        
+        const correctUrl = getProductUrl(staticProduct);
+        const expectedSlug = correctUrl.split('/').pop();
+        if (slug !== expectedSlug) {
+          navigate(correctUrl, { replace: true });
+        }
         return;
       }
 
@@ -41,6 +55,12 @@ export function ProductDetail() {
             const productData = { id: docSnap.id, ...docSnap.data() } as Product;
             setProduct(productData);
             setActiveImage(productData.images?.[0] || '');
+            
+            const correctUrl = getProductUrl(productData);
+            const expectedSlug = correctUrl.split('/').pop();
+            if (slug !== expectedSlug) {
+              navigate(correctUrl, { replace: true });
+            }
           } else {
             setProduct(PRODUCTS[0]); // Fallback
             setActiveImage(PRODUCTS[0].images?.[0] || '');
@@ -57,7 +77,7 @@ export function ProductDetail() {
       setLoading(false);
     };
     fetchProduct();
-  }, [id]);
+  }, [id, slug, navigate]);
 
   const handleAddToCart = () => {
     if (product) addToCart(product);

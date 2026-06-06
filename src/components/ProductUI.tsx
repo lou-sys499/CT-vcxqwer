@@ -6,6 +6,7 @@ import { getProductTags } from '../lib/tagging';
 import { cn } from '../lib/utils';
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getProductUrl } from '../utils/seo';
 
 interface ProductCardProps {
   product: Product;
@@ -21,7 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       whileHover={{ y: -8 }}
       className="group relative bg-white rounded-3xl overflow-hidden premium-shadow border border-slate-100 flex flex-col h-full"
     >
-      <NavLink to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden bg-slate-50">
+      <NavLink to={getProductUrl(product)} className="block relative aspect-square overflow-hidden bg-slate-50">
         <img 
           src={product.images?.[0] || 'https://images.unsplash.com/photo-1594818821917-001a707ecc5c?auto=format&fit=crop&q=80&w=800'} 
           alt={`Shop ${product.brand} ${product.name} cordless power tools & accessories online`} 
@@ -86,7 +87,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span className="text-sm text-slate-400 line-through">${product.originalPrice}</span>
             )}
           </div>
-          <NavLink to={`/product/${product.id}`} className="text-slate-400 hover:text-orange-600 transition-colors">
+          <NavLink to={getProductUrl(product)} className="text-slate-400 hover:text-orange-600 transition-colors">
             <ArrowRight className="w-5 h-5" />
           </NavLink>
         </div>

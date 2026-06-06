@@ -7,6 +7,7 @@ import { ProductCard, TrustBar } from '../components/ProductUI';
 import { getFirestoreProducts } from '../services/productService';
 import { Product, Category } from '../types';
 import { SEO } from '../components/SEO';
+import { getProductUrl } from '../utils/seo';
 
 export function Home() {
   const [allProducts, setAllProducts] = React.useState<Product[]>(PRODUCTS);
@@ -179,7 +180,7 @@ export function Home() {
                 <div className="flex items-center gap-6">
                   <div className="text-3xl font-black text-white">${topSmotureProduct.price}</div>
                   <NavLink 
-                    to={`/product/${topSmotureProduct.id}`}
+                    to={getProductUrl(topSmotureProduct)}
                     className="bg-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-700 transition-all flex items-center gap-2"
                   >
                     View Details <ArrowRight className="w-5 h-5" />

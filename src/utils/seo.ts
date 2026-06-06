@@ -82,3 +82,23 @@ export function generateSeoConfig(params: SeoConfigParams) {
     ogType: params.ogType || 'website',
   };
 }
+
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize('NFD') // remove accents
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .replace(/\s+/g, '-') // replace spaces with -
+    .replace(/[^\w-]+/g, '') // remove all non-word character symbols except dash
+    .replace(/--+/g, '-') // replace multiple hyphens with single hyphen
+    .replace(/^-+|-+$/g, ''); // trim hyphens from ends
+}
+
+export function getProductUrl(product: { id: string; name: string; brand?: string }): string {
+  const brandPart = product.brand && product.brand.toLowerCase() !== 'generic' ? `${product.brand}-` : '';
+  const cleanSlug = slugify(`${brandPart}${product.name}`);
+  return `/product/${product.id}/${cleanSlug}`;
+}
+

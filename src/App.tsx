@@ -8,7 +8,7 @@ import { useEffect, Suspense, lazy } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Navbar, Footer } from './components/Layout';
 import { CartProvider } from './context/CartContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { SEO } from './components/SEO';
 import { SEOAnalyzer } from './components/SEOAnalyzer';
 
@@ -39,6 +39,47 @@ function ScrollToTop() {
   return null;
 }
 
+function AppContent() {
+  const { isAdmin } = useAuth();
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow bg-[#F9FAFB]">
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/category/:slug" element={<Category />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/product/:id/:slug" element={<ProductDetail />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPostPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/sitemap" element={<Sitemap />} />
+            <Route path="/vacuums" element={<Vacuums />} />
+            <Route path="/tool-accessories" element={<Accessories />} />
+            <Route path="/recipes" element={<Recipes />} />
+          </Routes>
+        </Suspense>
+      </main>
+      <Footer />
+      {isAdmin && <SEOAnalyzer />}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <HelmetProvider>
@@ -46,39 +87,7 @@ export default function App() {
         <CartProvider>
           <Router>
             <ScrollToTop />
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-grow bg-[#F9FAFB]">
-                <Suspense fallback={
-                  <div className="min-h-screen flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
-                  </div>
-                }>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/category/:slug" element={<Category />} />
-                    <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:id" element={<BlogPostPage />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/order-success" element={<OrderSuccess />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                    <Route path="/refund-policy" element={<RefundPolicy />} />
-                    <Route path="/privacy" element={<PrivacyPolicy />} />
-                    <Route path="/terms" element={<TermsOfService />} />
-                    <Route path="/sitemap" element={<Sitemap />} />
-                    <Route path="/vacuums" element={<Vacuums />} />
-                    <Route path="/tool-accessories" element={<Accessories />} />
-                    <Route path="/recipes" element={<Recipes />} />
-                  </Routes>
-                </Suspense>
-              </main>
-              <Footer />
-              <SEOAnalyzer />
-            </div>
+            <AppContent />
           </Router>
         </CartProvider>
       </AuthProvider>

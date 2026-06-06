@@ -26,7 +26,25 @@ export function Category() {
   const [isMobileModalOpen, setIsMobileModalOpen] = React.useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
 
-  const BRANDS = ['Smoture', 'VacLife', 'Inteture', 'Dolphin'];
+  const BRANDS = React.useMemo(() => {
+    const brandsSet = new Set<string>();
+    allProducts.forEach(p => {
+      if (p.brand) {
+        const raw = p.brand.trim();
+        let formatted = raw;
+        if (raw.toLowerCase() === 'dewalt') formatted = 'DeWalt';
+        else if (raw.toLowerCase() === 'ryobi') formatted = 'RYOBI';
+        else if (raw.toLowerCase() === 'generic') formatted = 'Generic';
+        else formatted = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+        brandsSet.add(formatted);
+      }
+    });
+    if (brandsSet.size === 0) {
+      if (slug === 'power-tools') return ['DeWalt', 'RYOBI', 'Generic'];
+      return ['Smoture', 'VacLife', 'Inteture', 'Dolphin'];
+    }
+    return Array.from(brandsSet).sort();
+  }, [allProducts, slug]);
 
   // Sync brandParam with state
   React.useEffect(() => {
@@ -111,14 +129,14 @@ export function Category() {
       <div>
         <h3 className="font-bold text-slate-900 mb-4 uppercase tracking-widest text-[10px]">Brand</h3>
         <div className="space-y-3">
-          {['Smoture', 'VacLife', 'Inteture', 'Dolphin'].map(brand => (
+          {BRANDS.map(brand => (
             <label key={brand} className="flex items-center gap-3 cursor-pointer group">
               <input 
                 type="checkbox" 
-                checked={filterBrand.includes(brand)}
+                checked={filterBrand.some(b => b.toLowerCase() === brand.toLowerCase())}
                 onChange={(e) => {
                   if (e.target.checked) setFilterBrand(prev => [...prev, brand]);
-                  else setFilterBrand(prev => prev.filter(b => b !== brand));
+                  else setFilterBrand(prev => prev.filter(b => b.toLowerCase() !== brand.toLowerCase()));
                 }}
                 className="w-5 h-5 rounded-md border-slate-300 text-orange-600 focus:ring-orange-600 cursor-pointer" 
               />

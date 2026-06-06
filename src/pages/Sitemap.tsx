@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ChevronRight, Globe, ShoppingBag, BookOpen, Shield, ShieldAlert } from 'lucide-react';
 import { SEO } from '../components/SEO';
+import { getProductUrl } from '../utils/seo';
 import { getFirestoreProducts, getFirestoreCategories } from '../services/productService';
 import { getBlogPosts } from '../services/blogService';
 import { Product, Category, BlogPost } from '../types';
@@ -253,7 +254,7 @@ export function Sitemap() {
               {products.map((prod) => (
                 <NavLink 
                   key={prod.id} 
-                  to={`/product/${prod.id}`}
+                  to={getProductUrl(prod)}
                   className="p-4 rounded-2xl border border-slate-100 hover:border-orange-500 hover:bg-orange-50/10 transition-all font-medium text-xs text-slate-600 hover:text-orange-600 flex items-center gap-2 group"
                 >
                   <ChevronRight className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
