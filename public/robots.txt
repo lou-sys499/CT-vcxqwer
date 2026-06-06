@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
+# Private Dashboards & Checkout Routing
+Disallow: /account/
 Disallow: /checkout
-Disallow: /admin
+Disallow: /order-confirmation
+Disallow: /order-complete
+
+# Search Queries (with query parameters)
+Disallow: /search?q=
+Disallow: /search*?*q=
 
 Sitemap: https://cordlesstoolz.com/sitemap.xml
