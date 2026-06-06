@@ -226,10 +226,12 @@ Sitemap: ${baseUrl}/sitemap.xml`);
 
       try {
         const { getBlogPosts } = await import("./src/services/blogService");
+        const { getBlogPostUrl } = await import("./src/utils/seo");
         const posts = await getBlogPosts();
         for (const post of posts) {
+          const urlPath = getBlogPostUrl(post);
           res.write('  <url>\n');
-          res.write(`    <loc>${baseUrl}/blog/${post.id}</loc>\n`);
+          res.write(`    <loc>${baseUrl}${urlPath}</loc>\n`);
           res.write('    <changefreq>weekly</changefreq>\n');
           res.write('    <priority>0.7</priority>\n');
           res.write('  </url>\n');

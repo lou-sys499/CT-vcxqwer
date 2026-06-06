@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ChevronRight, Globe, ShoppingBag, BookOpen, Shield, ShieldAlert } from 'lucide-react';
 import { SEO } from '../components/SEO';
-import { getProductUrl } from '../utils/seo';
+import { getProductUrl, getBlogPostUrl } from '../utils/seo';
 import { getFirestoreProducts, getFirestoreCategories } from '../services/productService';
 import { getBlogPosts } from '../services/blogService';
 import { Product, Category, BlogPost } from '../types';
@@ -131,7 +131,7 @@ export function Sitemap() {
               
               {blogPosts.slice(0, 5).map((post) => (
                 <li key={post.id || post.title}>
-                  <NavLink to={`/blog/${post.id}`} className="flex items-start text-slate-600 hover:text-orange-600 transition-colors font-medium group text-sm">
+                  <NavLink to={getBlogPostUrl(post)} className="flex items-start text-slate-600 hover:text-orange-600 transition-colors font-medium group text-sm">
                     <ChevronRight className="w-4 h-4 mr-2 mt-0.5 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex-shrink-0" />
                     <span>Read expert analysis of {post.title}</span>
                   </NavLink>

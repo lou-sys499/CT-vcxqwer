@@ -102,3 +102,9 @@ export function getProductUrl(product: { id: string; name: string; brand?: strin
   return `/product/${product.id}/${cleanSlug}`;
 }
 
+export function getBlogPostUrl(post: { id: string; title: string }): string {
+  const cleanSlug = slugify(post.title);
+  return `/blog/${post.id}/${cleanSlug}`;
+}
+
+

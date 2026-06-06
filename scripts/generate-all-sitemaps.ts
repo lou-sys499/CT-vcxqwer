@@ -24,6 +24,11 @@ function getProductUrl(product: { id: string; name: string; brand?: string }): s
   return `/product/${product.id}/${cleanSlug}`;
 }
 
+function getBlogPostUrl(post: { id: string; title: string }): string {
+  const cleanSlug = slugify(post.title);
+  return `/blog/${post.id}/${cleanSlug}`;
+}
+
 async function run() {
   try {
     console.log("🚀 Pre-generating all sitemaps dynamically...");
@@ -71,7 +76,8 @@ async function run() {
     let blogXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
     const posts = await getBlogPosts();
     for (const post of posts) {
-      blogXml += `  <url>\n    <loc>${SITE_URL}/blog/${post.id}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+      const pathSuffix = getBlogPostUrl(post);
+      blogXml += `  <url>\n    <loc>${SITE_URL}${pathSuffix}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
     }
     blogXml += `</urlset>\n`;
 

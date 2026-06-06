@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, User, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { BlogPost, Product } from '../types';
@@ -8,15 +8,18 @@ import { getFirestoreProducts } from '../services/productService';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import { SEO } from '../components/SEO';
+import { getBlogPostUrl, getProductUrl } from '../utils/seo';
 
 export function BlogPostPage() {
-  const { id } = useParams<{ id: string }>();
+  const { id, slug } = useParams<{ id: string; slug?: string }>();
+  const navigate = useNavigate();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const [posts, productsData] = await Promise.all([
         getBlogPosts(),
         getFirestoreProducts()
@@ -25,9 +28,17 @@ export function BlogPostPage() {
       setPost(found || null);
       setProducts((productsData || []).filter(Boolean));
       setLoading(false);
+
+      if (found) {
+        const correctUrl = getBlogPostUrl(found);
+        const expectedSlug = correctUrl.split('/').pop();
+        if (slug !== expectedSlug) {
+          navigate(correctUrl, { replace: true });
+        }
+      }
     };
     fetchData();
-  }, [id]);
+  }, [id, slug, navigate]);
 
   const linkedContent = useMemo(() => {
     if (!post || !products.length) return post?.content || '';
@@ -45,7 +56,7 @@ export function BlogPostPage() {
       const regex = new RegExp(`(${escapedName})(?!(?:[^\\[]*\\]|[^\\(]*\\)))`, 'gi');
       
       content = content.replace(regex, (match) => {
-        return `[${match}](/product/${product.id})`;
+        return `[${match}](${getProductUrl(product)})`;
       });
     });
     

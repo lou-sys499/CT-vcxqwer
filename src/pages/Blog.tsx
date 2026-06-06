@@ -6,6 +6,7 @@ import { BlogPost } from '../types';
 import { getBlogPosts } from '../services/blogService';
 import { cn } from '../lib/utils';
 import { SEO } from '../components/SEO';
+import { getBlogPostUrl } from '../utils/seo';
 
 export function Blog() {
   const [searchParams] = useSearchParams();
@@ -60,7 +61,7 @@ export function Blog() {
       "@type": "BlogPosting",
       "headline": post.title,
       "datePublished": post.date,
-      "url": `${window.location.origin}/blog/${post.id}`
+      "url": `${window.location.origin}${getBlogPostUrl(post)}`
     }))
   };
 
@@ -169,7 +170,7 @@ export function Blog() {
                       <span className="text-sm font-bold text-slate-900">{post.author}</span>
                     </div>
                     <Link 
-                      to={`/blog/${post.id}`}
+                      to={getBlogPostUrl(post)}
                       className="text-orange-600 p-2 rounded-full bg-orange-50 group-hover:bg-orange-600 group-hover:text-white transition-all"
                     >
                       <ChevronRight className="w-5 h-5" />

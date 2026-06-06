@@ -58,6 +58,7 @@ function AppContent() {
             <Route path="/product/:id/:slug" element={<ProductDetail />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:id" element={<BlogPostPage />} />
+            <Route path="/blog/:id/:slug" element={<BlogPostPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/admin" element={<Admin />} />

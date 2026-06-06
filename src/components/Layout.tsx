@@ -153,9 +153,9 @@ export function Navbar() {
                 <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="bg-white shadow-xl rounded-xl p-4 border border-slate-100 min-w-[200px]">
                     <h4 className="font-bold text-xs uppercase text-slate-400 mb-2">Buying Guides</h4>
-                    <NavLink to="/blog/qDLx8R50DsuPNUecwKNT" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Ice Auger for Cordless Drill</NavLink>
-                    <NavLink to="/blog/rIc0Vs1eO7t27hcrGqYH" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Cordless Vacuums</NavLink>
-                    <NavLink to="/blog/DycH1r4dP0LlQTK2ayXH" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Cordless Nailers</NavLink>
+                    <NavLink to="/blog/qDLx8R50DsuPNUecwKNT/best-ice-auger-for-cordless-drill" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Ice Auger for Cordless Drill</NavLink>
+                    <NavLink to="/blog/rIc0Vs1eO7t27hcrGqYH/best-cordless-vacuums" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Cordless Vacuums</NavLink>
+                    <NavLink to="/blog/DycH1r4dP0LlQTK2ayXH/best-cordless-nailers" className="block text-sm font-medium text-slate-700 hover:text-orange-600 py-1">Best Cordless Nailers</NavLink>
                   </div>
                 </div>
               </div>
